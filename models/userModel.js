@@ -4,6 +4,7 @@ const Joi = require('joi');
 const { handleMongooseError } = require('../helpers');
 
 const emailReg = /^\S+@\S+\.\S+$/;
+// const dateRegexp = /^\d{2}-d{2}-\d{4}/;
 
 const userSchema = new Schema(
 	{
@@ -15,11 +16,6 @@ const userSchema = new Schema(
 			type: String,
 			required: [true, 'Email is required'],
 			unique: true,
-		},
-		subscription: {
-			type: String,
-			enum: ['starter', 'pro', 'business'],
-			default: 'starter',
 		},
 		token: {
 			type: String,
