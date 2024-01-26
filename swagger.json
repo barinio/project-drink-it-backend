@@ -24,7 +24,7 @@
 		}
 	],
 	"paths": {
-		"/api/users/signup": {
+		"/api/users/register": {
 			"post": {
 				"tags": ["Auth"],
 				"summary": "User registration",
@@ -73,7 +73,7 @@
 				}
 			}
 		},
-		"/api/users/signin": {
+		"/api/users/login": {
 			"post": {
 				"tags": ["Auth"],
 				"summary": "User Authorization",
@@ -142,10 +142,119 @@
 								}
 							}
 						}
+					},
+					"404": {
+						"description": "User not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotFoundResponse"
+								}
+							}
+						}
 					}
 				}
 			}
 		},
+		"/api/users/verify/:verificationToken": {
+			"get": {
+				"tags": ["Auth"],
+				"summary": "User verify",
+				"parameters": [
+					{
+						"name": "verificationToken",
+						"in": "path",
+						"required": true,
+						"schema": { "type": "string" },
+						"description": "Unique id"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Successful operation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ResendEmailResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "User already verified",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AlreadyVerifiedResponse"
+								}
+							}
+						}
+					},
+
+					"404": {
+						"description": "User not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotFoundResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/users/verify": {
+			"post": {
+				"tags": ["Auth"],
+				"summary": "User verify",
+				"requestBody": {
+					"description": "verifications object",
+
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/VerifyRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Successful operation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ResendEmailResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad request (invalid request body)",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BadRequestBodyResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Users email not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotFoundResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+
 		"/api/users/current": {
 			"get": {
 				"tags": ["User"],
@@ -169,6 +278,16 @@
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/UnauthorizationResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "User not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotFoundResponse"
 								}
 							}
 						}
@@ -213,6 +332,138 @@
 								}
 							}
 						}
+					},
+					"404": {
+						"description": "User not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotFoundResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/users/dailynorma": {
+			"patch": {
+				"tags": ["User"],
+				"summary": "Update user data",
+				"security": [{ "Bearer": [] }],
+				"requestBody": {
+					"description": "Users new daily waters norma ",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserDailyNorma"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Successful operation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserDailyNorma"
+								}
+							}
+						}
+					},
+
+					"401": {
+						"description": "Unauthorization",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UnauthorizationResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad request (invalid request body)",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BadRequestBodyResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "User not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotFoundResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/users/avatar": {
+			"patch": {
+				"tags": ["User"],
+				"summary": "Update user avatar",
+				"security": [{ "Bearer": [] }],
+				"requestBody": {
+					"description": "image file for users avatar",
+					"required": true,
+					"content": {
+						"multipart/form-data": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateAvatarRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Successful operation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UpdateAvatarResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad request (invalid request body)",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BadRequestBodyResponse"
+								}
+							}
+						}
+					},
+
+					"401": {
+						"description": "Unauthorization",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UnauthorizationResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "User not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotFoundResponse"
+								}
+							}
+						}
 					}
 				}
 			}
@@ -236,6 +487,17 @@
 					}
 				}
 			},
+			"VerifyRequest": {
+				"type": "object",
+				"required": ["email"],
+				"properties": {
+					"email": {
+						"type": "string",
+						"description": "User's email",
+						"format": "email"
+					}
+				}
+			},
 			"RegistrationResponse": {
 				"type": "object",
 				"properties": {
@@ -253,6 +515,17 @@
 
 				"example": { "email": "example@gmail.com", "_id": "65b27e60a97a5a32beabeff3" }
 			},
+			"ResendEmailResponse": {
+				"type": "object",
+				"required": ["message"],
+				"properties": {
+					"message": {
+						"type": "string",
+						"description": "successful send verify email",
+						"example": "successful send verify email "
+					}
+				}
+			},
 			"BadRequestBodyResponse": {
 				"type": "object",
 				"required": ["message"],
@@ -262,6 +535,30 @@
 						"description": "error message",
 
 						"example": "missing fields"
+					}
+				}
+			},
+			"NotFoundResponse": {
+				"type": "object",
+				"required": ["message"],
+				"properties": {
+					"message": {
+						"type": "string",
+						"description": "error message",
+
+						"example": "Not found"
+					}
+				}
+			},
+			"AlreadyVerifiedResponse": {
+				"type": "object",
+				"required": ["message"],
+				"properties": {
+					"message": {
+						"type": "string",
+						"description": "error message",
+
+						"example": "Email already verified"
 					}
 				}
 			},
@@ -322,6 +619,26 @@
 						"type": "string",
 						"description": "User's id",
 						"example": "65b27e60a97a5a32beabeff3"
+					},
+					"gender": {
+						"description": "User's gender",
+						"example": "woman",
+						"enum": ["woman", "man"]
+					},
+					"name": {
+						"type": "string",
+						"description": "User's name",
+						"example": "Edik Huloian"
+					},
+					"outdatedPassword": {
+						"type": "string",
+						"description": "User's outdated password  must have minimum 8 and max 64 symbols",
+						"example": "qwerty123"
+					},
+					"newPassword": {
+						"type": "string",
+						"description": "User's new password  must have minimum 8 and max 64 symbols",
+						"example": "qwerty123"
 					}
 				}
 			},
@@ -358,6 +675,36 @@
 						"type": "string",
 						"description": "User's new password  must have minimum 8 and max 64 symbols",
 						"example": "qwerty123"
+					}
+				}
+			},
+			"UserDailyNorma": {
+				"type": "object",
+				"required": ["dailyNorma"],
+				"properties": {
+					"dailyNorma": {
+						"type": "number",
+						"description": "User's daily  waters norma",
+						"example": 1500
+					}
+				}
+			},
+			"UpdateAvatarResponse": {
+				"type": "object",
+				"properties": {
+					"avatarURL": {
+						"type": "string",
+						"description": "User's avatarURL",
+						"example": "string"
+					}
+				}
+			},
+			"UpdateAvatarRequest": {
+				"type": "object",
+				"properties": {
+					"avatar": {
+						"type": "file",
+						"description": "User's avatar"
 					}
 				}
 			}
