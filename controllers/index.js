@@ -23,6 +23,9 @@ module.exports = {
 	logout: ctrlWrapper(logout),
 	current: ctrlWrapper(current),
 	updateAvatar: ctrlWrapper(updateAvatar),
+	updateGender: ctrlWrapper(updateGender),
+	updateUserName: ctrlWrapper(updateUserName),
+	updateEmail: ctrlWrapper(updateEmail),
 
 	listContacts: ctrlWrapper(listContacts),
 	getContactById: ctrlWrapper(getContactById),
