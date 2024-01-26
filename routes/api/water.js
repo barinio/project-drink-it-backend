@@ -1,16 +1,17 @@
 const express = require('express');
 
 const ctrl = require('../../controllers');
-const { schemas } = require('../../models/contactModel');
-const { validBody, isValidId, authenticate } = require('../../middlewares/');
+const { schemas } = require('../../models/waterModel');
+const { validBody, isValidId, authenticate } = require('../../middlewares');
 
 const router = express.Router();
 
-router.get('/', authenticate, ctrl.listContacts);
+router.get('/', ctrl.listContacts);
 
 router.get('/:id', authenticate, isValidId, ctrl.getContactById);
 
-router.post('/', authenticate, validBody(schemas.addSchema), ctrl.addContact);
+// router.post('/', authenticate, validBody(schemas.addSchema), ctrl.addContact);
+router.post('/', validBody(schemas.addSchema), ctrl.addContact);
 
 router.delete('/:id', authenticate, isValidId, ctrl.removeContact);
 

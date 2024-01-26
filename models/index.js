@@ -1,4 +1,4 @@
-const { Contact } = require('./contactModel');
+const { Water } = require('./waterModel');
 const { User } = require('./userModel');
 
-module.exports = { Contact, User };
+module.exports = { Water, User };
