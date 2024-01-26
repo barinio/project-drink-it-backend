@@ -7,6 +7,10 @@ const login = require('./auth/login');
 const logout = require('./auth/logout');
 const current = require('./auth/current');
 const updateAvatar = require('./auth/updateAvatar');
+const updateGender = require('./auth/updateGender');
+const updateUserName = require('./auth/updateUserName');
+const updateEmail = require('./auth/updateEmail');
+const updateDailyNorma = require('./auth/updateDailyNorma');
 
 const listContacts = require('./contacts/listContacts');
 const getContactById = require('./contacts/getContactById');
@@ -26,6 +30,7 @@ module.exports = {
 	updateGender: ctrlWrapper(updateGender),
 	updateUserName: ctrlWrapper(updateUserName),
 	updateEmail: ctrlWrapper(updateEmail),
+	updateDailyNorma: ctrlWrapper(updateDailyNorma),
 
 	listContacts: ctrlWrapper(listContacts),
 	getContactById: ctrlWrapper(getContactById),

@@ -27,4 +27,6 @@ router.patch('/:id/userName', authenticate, ctrl.updateUserName);
 
 router.patch('/:id/email', authenticate, ctrl.updateEmail);
 
+router.patch('/:id/dailyNorma', authenticate, ctrl.updateDailyNorma);
+
 module.exports = router;

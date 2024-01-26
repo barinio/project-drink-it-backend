@@ -43,6 +43,11 @@ const userSchema = new Schema(
 			enum: genderList,
 			required: true,
 		},
+
+		dailyNorma: {
+			type: Number,
+			default: 0,
+		},
 		outdatedPassword: {
 			type: String,
 			required: [true, 'Set outdated password for user'],
@@ -91,14 +96,18 @@ const updateEmailSchema = Joi.object({
 	email: Joi.string().pattern(emailReg).required(),
 });
 
+const updateDailyNorma = Joi.object({
+	dailyNorma: Joi.number().required(),
+});
+
 const schemas = {
 	registerSchema,
 	loginSchema,
 	emailSchema,
-	updateUserSchema,
 	updateGenderSchema,
 	updateUserNameSchema,
 	updateEmailSchema,
+	updateDailyNorma,
 };
 
 const User = model('user', userSchema);
