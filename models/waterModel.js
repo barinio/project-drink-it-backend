@@ -11,9 +11,12 @@ const waterSchema = new Schema(
 		waterVolume: {
 			type: Number,
 		},
-		data: {
+		date: {
 			type: Date,
 		},
+		time: {
+			type: String,
+		}
 		// owner: {
 		// 	type: Schema.Types.ObjectId,
 		// 	ref: 'user',
@@ -29,7 +32,8 @@ waterSchema.post('save', handleMongooseError);
 const addSchema = Joi.object({
 	waterRate: Joi.number().min(1).max(15000).required(),
 	waterVolume: Joi.number().min(1).max(5000).required(),
-	data: Joi.date().required(),
+	date: Joi.date().required(),
+
 });
 
 // const updStutusSchema = Joi.object({
