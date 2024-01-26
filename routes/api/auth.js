@@ -19,7 +19,7 @@ router.post('/logout', authenticate, ctrl.logout);
 
 router.get('/current', authenticate, ctrl.current);
 
-router.patch('/avatars', authenticate, upload.single('avatar'), ctrl.updateAvatar);
+// router.patch('/avatars', authenticate, upload.single('avatar'), ctrl.updateAvatar);
 
 router.patch('/:id/users/info', authenticate, isValidId, ctrl.updateUser);
 
