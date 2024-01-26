@@ -6,10 +6,8 @@ const resendVerifyEmail = require('./auth/resendVerifyEmail');
 const login = require('./auth/login');
 const logout = require('./auth/logout');
 const current = require('./auth/current');
-const updateAvatar = require('./auth/updateAvatar');
-const updateGender = require('./auth/updateGender');
-const updateUserName = require('./auth/updateUserName');
-const updateEmail = require('./auth/updateEmail');
+const updateUser = require('./auth/updateUser');
+
 const updateDailyNorma = require('./auth/updateDailyNorma');
 
 const listContacts = require('./contacts/listContacts');
@@ -26,10 +24,7 @@ module.exports = {
 	login: ctrlWrapper(login),
 	logout: ctrlWrapper(logout),
 	current: ctrlWrapper(current),
-	updateAvatar: ctrlWrapper(updateAvatar),
-	updateGender: ctrlWrapper(updateGender),
-	updateUserName: ctrlWrapper(updateUserName),
-	updateEmail: ctrlWrapper(updateEmail),
+	updateUser: ctrlWrapper(updateUser),
 	updateDailyNorma: ctrlWrapper(updateDailyNorma),
 
 	listContacts: ctrlWrapper(listContacts),

@@ -78,25 +78,16 @@ const loginSchema = Joi.object({
 	password: Joi.string().min(8).max(64).required(),
 });
 
-// const updatePassword = Joi.object({
-// 	outdatedPassword: Joi.string().min(8).max(64).required(),
-// 	newPassword: Joi.string().min(8).max(64).required(),
-// 	repeatedNewPassword: Joi.string().min(8).max(64).required(),
-// });
-
-const updateGenderSchema = Joi.object({
-	gender: Joi.string()
-		.valid(...genderList)
-		.required(),
-});
-const updateUserNameSchema = Joi.object({
-	userName: Joi.string().required(),
-});
-const updateEmailSchema = Joi.object({
-	email: Joi.string().pattern(emailReg).required(),
+const updateUserSchema = Joi.object({
+	avatarURL: Joi.string(),
+	gender: Joi.string().valid(...genderList),
+	userName: Joi.string(),
+	email: Joi.string().pattern(emailReg),
+	outdatedPassword: Joi.string().min(8).max(64),
+	newPassword: Joi.string().min(8).max(64),
 });
 
-const updateDailyNorma = Joi.object({
+const updateDailyNormaSchema = Joi.object({
 	dailyNorma: Joi.number().required(),
 });
 
@@ -104,10 +95,8 @@ const schemas = {
 	registerSchema,
 	loginSchema,
 	emailSchema,
-	updateGenderSchema,
-	updateUserNameSchema,
-	updateEmailSchema,
-	updateDailyNorma,
+	updateUserSchema,
+	updateDailyNormaSchema,
 };
 
 const User = model('user', userSchema);

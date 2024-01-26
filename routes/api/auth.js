@@ -4,7 +4,7 @@ const ctrl = require('../../controllers');
 
 const router = express.Router();
 
-const { validateBody, authenticate, upload } = require('../../middlewares/');
+const { validateBody, authenticate, upload, isValidId } = require('../../middlewares/');
 const { schemas } = require('../../models/userModel');
 
 router.post('/register', validateBody(schemas.registerSchema), ctrl.register);
@@ -21,12 +21,8 @@ router.get('/current', authenticate, ctrl.current);
 
 router.patch('/avatars', authenticate, upload.single('avatar'), ctrl.updateAvatar);
 
-router.patch('/:id/gender', authenticate, ctrl.updateGender);
+router.patch('/:id/users/info', authenticate, isValidId, ctrl.updateUser);
 
-router.patch('/:id/userName', authenticate, ctrl.updateUserName);
-
-router.patch('/:id/email', authenticate, ctrl.updateEmail);
-
-router.patch('/:id/dailyNorma', authenticate, ctrl.updateDailyNorma);
+router.patch('/:id/dailynorma', authenticate, isValidId, ctrl.updateDailyNorma);
 
 module.exports = router;
