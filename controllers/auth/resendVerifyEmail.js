@@ -15,8 +15,8 @@ const resendVerifyEmail = async (req, res) => {
 	}
 	const verifyEmail = {
 		to: email,
-		fubject: 'Verification email',
-		html: `<a target="_blank" href="${BASE_URL}/api/users/verify/${user.verificationToken}">Click verify email</a>`,
+		subject: 'Verification email',
+		html: `<a target="_blank" href="${BASE_URL}/api/auth/verify/${user.verificationToken}">Click verify email</a>`,
 	};
 	await sendEmail(verifyEmail);
 

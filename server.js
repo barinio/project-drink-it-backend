@@ -8,11 +8,11 @@ mongoose.set('strictQuery', true);
 
 mongoose
 	.connect(MONGO_HOST, { dbName: DB_NAME })
-	.then(can => {
+	.then(() => {
 		app.listen(3000);
-		console.log('mongo.db is connected');
+		console.log('Database connection successful');
 	})
-	.catch(err => {
-		console.log(err);
+	.catch(e => {
+		console.log('Error connecting to the database:', e.message);
 		process.exit(1);
 	});

@@ -4,6 +4,8 @@ const Joi = require('joi');
 const { handleMongooseError } = require('../helpers');
 
 const emailReg = /^\S+@\S+\.\S+$/;
+// const dateRegexp = /^\d{2}-d{2}-\d{4}/;
+const genderList = ['woman', 'man'];
 
 const userSchema = new Schema(
 	{
@@ -16,18 +18,13 @@ const userSchema = new Schema(
 			required: [true, 'Email is required'],
 			unique: true,
 		},
-		subscription: {
-			type: String,
-			enum: ['starter', 'pro', 'business'],
-			default: 'starter',
-		},
 		token: {
 			type: String,
 			default: '',
 		},
 		avatarURL: {
 			type: String,
-			required: true,
+			// required: true,
 		},
 		verify: {
 			type: Boolean,
@@ -37,6 +34,32 @@ const userSchema = new Schema(
 			type: String,
 			required: [true, 'Verify token is required'],
 		},
+		userName: {
+			type: String,
+			default: '',
+		},
+		gender: {
+			type: String,
+			enum: genderList,
+			// required: true,
+		},
+
+		dailyNorma: {
+			type: Number,
+			default: 0,
+		},
+		outdatedPassword: {
+			type: String,
+			// required: [true, 'Set outdated password for user'],
+		},
+		newPassword: {
+			type: String,
+			// required: [true, 'Set new password for user'],
+		},
+		repeatedNewPassword: {
+			type: String,
+			// required: [true, 'Repeat new password for user'],
+		},
 	},
 	{ versionKey: false }
 );
@@ -45,18 +68,37 @@ userSchema.post('save', handleMongooseError);
 
 const registerSchema = Joi.object({
 	email: Joi.string().pattern(emailReg).required(),
-	password: Joi.string().min(6).required(),
+	password: Joi.string().min(8).max(64).required(),
 });
 const emailSchema = Joi.object({
 	email: Joi.string().pattern(emailReg).required(),
 });
 const loginSchema = Joi.object({
 	email: Joi.string().pattern(emailReg).required(),
-	password: Joi.string().min(6).required(),
+	password: Joi.string().min(8).max(64).required(),
 });
 
-const schemas = { registerSchema, loginSchema, emailSchema };
+const updateUserSchema = Joi.object({
+	avatarURL: Joi.string(),
+	gender: Joi.string().valid(...genderList),
+	userName: Joi.string(),
+	email: Joi.string().pattern(emailReg),
+	outdatedPassword: Joi.string().min(8).max(64),
+	newPassword: Joi.string().min(8).max(64),
+});
 
-const User = model('users', userSchema);
+const updateDailyNormaSchema = Joi.object({
+	dailyNorma: Joi.number().required(),
+});
+
+const schemas = {
+	registerSchema,
+	loginSchema,
+	emailSchema,
+	updateUserSchema,
+	updateDailyNormaSchema,
+};
+
+const User = model('user', userSchema);
 
 module.exports = { User, schemas };
