@@ -9,6 +9,7 @@ const { BASE_URL } = process.env;
 
 const register = async (req, res) => {
 	const { email, password } = req.body;
+
 	const user = await User.findOne({ email });
 	if (user) {
 		throw HttpError(409, 'Email in use');
@@ -27,8 +28,8 @@ const register = async (req, res) => {
 
 	const verifyEmail = {
 		to: email,
-		fubject: 'Verification email',
-		html: `<a target="_blank" href="${BASE_URL}/api/users/verify/${verificationToken}">Click verify email</a>`,
+		subject: 'Verification email',
+		html: `<a target="_blank" href="${BASE_URL}/api/auth/verify/${verificationToken}">Click verify email</a>`,
 	};
 	await sendEmail(verifyEmail);
 	res.status(201).json({ user: { email: newUser.email } });

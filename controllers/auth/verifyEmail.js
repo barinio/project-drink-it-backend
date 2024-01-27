@@ -10,6 +10,6 @@ const verifyEmail = async (req, res) => {
 	}
 
 	await User.findByIdAndUpdate(user._id, { verify: true, verificationToken: '' });
-	res.json({ message: 'Verification successful' });
+	res.status(200).json({ message: 'Verification successful' });
 };
 module.exports = verifyEmail;

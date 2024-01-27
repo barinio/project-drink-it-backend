@@ -1,6 +1,6 @@
 const isValidId = require('./isValidId');
-const validateBody = require('./validateBody');
+const validBody = require('./validBody');
 const authenticate = require('./authenticate');
 const upload = require('./upload');
 
-module.exports = { isValidId, validateBody, authenticate, upload };
+module.exports = { isValidId, validBody, authenticate, upload };

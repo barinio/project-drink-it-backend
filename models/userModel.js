@@ -24,7 +24,7 @@ const userSchema = new Schema(
 		},
 		avatarURL: {
 			type: String,
-			required: true,
+			// required: true,
 		},
 		verify: {
 			type: Boolean,
@@ -41,7 +41,7 @@ const userSchema = new Schema(
 		gender: {
 			type: String,
 			enum: genderList,
-			required: true,
+			// required: true,
 		},
 
 		dailyNorma: {
@@ -50,15 +50,15 @@ const userSchema = new Schema(
 		},
 		outdatedPassword: {
 			type: String,
-			required: [true, 'Set outdated password for user'],
+			// required: [true, 'Set outdated password for user'],
 		},
 		newPassword: {
 			type: String,
-			required: [true, 'Set new password for user'],
+			// required: [true, 'Set new password for user'],
 		},
 		repeatedNewPassword: {
 			type: String,
-			required: [true, 'Repeat new password for user'],
+			// required: [true, 'Repeat new password for user'],
 		},
 	},
 	{ versionKey: false }
