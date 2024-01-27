@@ -2,11 +2,17 @@ const express = require('express');
 const logger = require('morgan');
 const cors = require('cors');
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
+
 require('dotenv').config({ path: './envs/.env' });
 
 const authRouter = require('./routes/api/auth');
 
+const contactsRouter = require('./routes/api/water');
+
 const app = express();
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
 
