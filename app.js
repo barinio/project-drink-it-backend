@@ -9,7 +9,7 @@ require('dotenv').config({ path: './envs/.env' });
 
 const authRouter = require('./routes/api/auth');
 
-const contactsRouter = require('./routes/api/water');
+const watersRouter = require('./routes/api/water');
 
 const app = express();
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
@@ -23,6 +23,7 @@ app.use(express.json());
 app.use(express.static('public'));
 
 app.use('/api/auth', authRouter);
+app.use('/api/waters', watersRouter);
 
 app.use((req, res) => {
 	res.status(404).json({ message: 'Not found' });

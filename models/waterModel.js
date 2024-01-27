@@ -5,7 +5,7 @@ const { handleMongooseError } = require('../helpers');
 
 const waterSchema = new Schema(
 	{
-		waterRate: {
+		dailyNorma: {
 			type: Number,
 		},
 		waterVolume: {
@@ -16,12 +16,18 @@ const waterSchema = new Schema(
 		},
 		time: {
 			type: String,
-		}
-		// owner: {
-		// 	type: Schema.Types.ObjectId,
-		// 	ref: 'user',
-		// 	required: true,
-		// },
+		},
+		perDay: {
+			type: Number
+		},
+		persentWater: {
+			type: Number
+		},
+		owner: {
+			type: Schema.Types.ObjectId,
+			ref: 'users',
+			required: true,
+		},
 	},
 
 	{ versionKey: false, timestamps: true }
@@ -30,9 +36,10 @@ const waterSchema = new Schema(
 waterSchema.post('save', handleMongooseError);
 
 const addSchema = Joi.object({
-	waterRate: Joi.number().min(1).max(15000).required(),
+	// waterRate: Joi.number().min(1).max(15000).required(),
 	waterVolume: Joi.number().min(1).max(5000).required(),
-	date: Joi.date().required(),
+	time: Joi.string(),
+	date: Joi.date(),
 
 });
 
