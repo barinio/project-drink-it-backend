@@ -2,14 +2,14 @@ const mongoose = require('mongoose');
 
 const app = require('./app');
 
-const { MONGO_HOST, DB_NAME } = process.env;
+const { MONGO_HOST, DB_NAME, BASE_URL } = process.env;
 
 mongoose.set('strictQuery', true);
 
 mongoose
 	.connect(MONGO_HOST, { dbName: DB_NAME })
 	.then(() => {
-		app.listen(3000);
+		app.listen(BASE_URL);
 		console.log('Database connection successful');
 	})
 	.catch(e => {
