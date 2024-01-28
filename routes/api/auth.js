@@ -4,7 +4,9 @@ const ctrl = require('../../controllers');
 
 const router = express.Router();
 
-const { validBody, authenticate, upload, isValidId } = require('../../middlewares/');
+// const { validBody, authenticate, upload, isValidId } = require('../../middlewares/');
+const { validBody, authenticate, isValidId } = require('../../middlewares/');
+
 const { schemas } = require('../../models/userModel');
 
 router.post('/register', validBody(schemas.registerSchema), ctrl.register);
