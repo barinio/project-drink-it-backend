@@ -7,7 +7,7 @@ const swaggerDocument = require('./swagger.json');
 
 require('dotenv').config({ path: './envs/.env' });
 
-const authRouter = require('./routes/api/auth');
+const authRouter = require('./routes/api/users');
 
 const watersRouter = require('./routes/api/water');
 
@@ -22,7 +22,7 @@ app.use(express.json());
 
 app.use(express.static('public'));
 
-app.use('/api/auth', authRouter);
+app.use('/api/users', authRouter);
 app.use('/api/waters', watersRouter);
 
 app.use((req, res) => {
