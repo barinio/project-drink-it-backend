@@ -8,6 +8,7 @@ const logout = require('./auth/logout');
 const current = require('./auth/current');
 const updateUser = require('./auth/updateUser');
 const updateDailyNorma = require('./auth/updateDailyNorma');
+const updateAvatar = require('./auth/updateAvatar');
 
 const addWater = require('./water/addWater');
 const editWater = require('./water/editWater');
@@ -24,12 +25,11 @@ module.exports = {
 	current: ctrlWrapper(current),
 	updateUser: ctrlWrapper(updateUser),
 	updateDailyNorma: ctrlWrapper(updateDailyNorma),
+	updateAvatar: ctrlWrapper(updateAvatar),
 
 	addWater: ctrlWrapper(addWater),
 	editWater: ctrlWrapper(editWater),
 	removeWater: ctrlWrapper(removeWater),
 	today: ctrlWrapper(today),
 	month: ctrlWrapper(month),
-
-
 };
