@@ -12,7 +12,7 @@ const authRouter = require('./routes/api/auth');
 const watersRouter = require('./routes/api/water');
 
 const app = express();
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
 
