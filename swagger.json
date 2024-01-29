@@ -468,6 +468,67 @@
 				}
 			}
 		},
+		"/api/users/waterrate": {
+			"patch": {
+				"tags": ["User"],
+				"summary": "Get user's water rate",
+				"security": [{ "Bearer": [] }],
+				"requestBody": {
+					"description": "Users waterrate",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserWaterRate"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Successful operation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserWaterRate"
+								}
+							}
+						}
+					},
+
+					"401": {
+						"description": "Unauthorization",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UnauthorizationResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad request (invalid request body)",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BadRequestBodyResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "User not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotFoundResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/api/users/avatar": {
 			"patch": {
 				"tags": ["User"],
@@ -757,6 +818,16 @@
 					"waterModel": {
 						"type": "string",
 						"description": "Users water model"
+					}
+				}
+			},
+			"UserWaterRate": {
+				"type": "object",
+				"required": ["UserWaterRate"],
+				"properties": {
+					"waterModel": {
+						"type": "string",
+						"description": "Users water rate"
 					}
 				}
 			},
