@@ -1,39 +1,63 @@
 const { Water } = require('../../models');
 
 const listWaterMonth = async (req, res) => {
-	const { _id: owner, } = req.user;
-	const { date } = req.body;
+	const { _id: owner } = req.user;
+	// const { date } = req.query;
+	console.log(owner);
 
+	// const water = await Water.aggregate({ owner: owner })
+	// const total = await Water.countDocuments(filter);
 
-
-	const filter = {
-		owner
-	};
-
-	const water = await Water.find(filter);
-	const total = await Water.countDocuments(filter);
-	const monthlyResults = await Water.aggregate([
-		{
-			$match: {
-				owner: owner, "date": {
-					$gte: new Date("01.01.2024"),
-					$lte: new Date("30.01.2024")
+	const monthlyResults = await Water.aggregate(
+		[
+			// { $sort: { owner: owner } },
+			{
+				$match: {
+					$expr: {
+						$and: [
+							{
+								$gte: [
+									{
+										$toDate: "$date"
+									},
+									new Date("2024-01-01").toLocaleDateString()
+								]
+							},
+							{
+								$lt: [
+									{
+										$toDate: "$date"
+									},
+									new Date("2024-01-30").toLocaleDateString()
+								]
+							}
+						]
+					}
 				}
-			},
-		},
-		{
-			$group: {
-				_id: '$date', totalper: { $sum: "$persentWater" }, totalWaterpe: { $sum: 1 }, daylyNorma: { $last: '$dailyNorma' }
-			},
-		}
-	])
+			}])
+	// { $sort: { type: -1 } }],
+	// { hint: { qty: 1, category: 1 } })
+	// 	{
+	// 		$match: {
+	// 			_id, date: {
+	// 				$gte: new Date("01.01.2024").toLocaleDateString(),
+	// 				$lte: new Date("30.01.2024").toLocaleDateString()
+	// 			}
+	// 		},
+	// 	},
+	// 	{
+	// 		$group: {
+	// 			_id: '$date', totalper: { $sum: "$persentWater" }, totalWaterpe: { $sum: 1 }, daylyNorma: { $last: '$dailyNorma' }
+	// 		},
+	// 	}
+	// ])
 
-	res.json({
+	res.json(
 		// water,
 		// total,
 		monthlyResults,
 		// persent: persent[0].totalper,
-	});
+	);
 };
 
 module.exports = listWaterMonth;

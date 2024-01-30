@@ -8,9 +8,6 @@ const waterSchema = new Schema(
 		dailyNorma: {
 			type: Number,
 		},
-		// waterVolume: {
-		// 	type: Number,
-		// },
 		date: {
 			type: String,
 		},
@@ -20,8 +17,8 @@ const waterSchema = new Schema(
 		perDay: {
 			type: Number
 		},
-		persent: {
-			type: Number
+		drankWater: {
+			// type: Number
 		},
 		waterlist: {
 			type: Array
@@ -41,11 +38,10 @@ const waterSchema = new Schema(
 waterSchema.post('save', handleMongooseError);
 
 const addSchema = Joi.object({
-	// waterRate: Joi.number().min(1).max(15000).required(),
 	waterVolume: Joi.number().min(1).max(5000).required(),
-	time: Joi.string(),
-	date: Joi.string(),
+	time: Joi.string().regex(/^([0-9]{2}):([0-9]{2})$/).required(),
 });
+
 
 // const updStutusSchema = Joi.object({
 // 	favorite: Joi.boolean().required(),

@@ -1,64 +1,36 @@
 const { Water } = require('../../models');
 const { HttpError } = require('../../helpers');
+const { validateID } = require('../../service/waterServices/uuidValid');
 
 const editWater = async (req, res) => {
 	const { _id } = req.query;
 	const { id } = req.params;
 
+	const validid = validateID(_id);
+
 	const { time, waterVolume } = req.body;
 
-	const { dailyNorma } = req.user;
-	const persentWater = (waterVolume / dailyNorma) * 100;
+	const { waterlist } = await Water.findById(id);
+	const persentWateronid = waterlist.find(keys => keys.id === _id);
 
 
-	const edit = await Water.updateOne({ _id: id, "waterlist.id": _id },
+	const edit = await Water.findOneAndUpdate({ _id: id, "waterlist.id": _id },
 		{
-			$inc: { persent: +persentWater },
-			"$set": { "waterlist.$.waterVolume": waterVolume, "waterlist.$.time": time }
-		}
+			$inc: { drankWater: -persentWateronid.waterVolume + waterVolume, perDay: -1 },
+			$set: { "waterlist.$.waterVolume": waterVolume, "waterlist.$.time": time }
+		}, { new: true }
 	);
 
 
-	// const { waterlist } = await Water.findOneAndUpdate(id);
-	// const persentWateronid = waterlist.find(keys => keys.id === _id).persentWater;
-
-	// if (!persentWateronid) {
-	// 	throw HttpError(404, 'Not found');
-	// }
-
-
-	// const removeWater = await Water.findByIdAndUpdate(id,
-	// 	{
-	// 		$inc: { persent: -persentWateronid, perDay: -1 },
-	// 		$pull: { waterlist: { id: _id } },
-	// 	},
-
-	// { new: true })
-	if (!edit) {
+	if (!edit || !validid) {
 		throw HttpError(404, 'Not found');
 	}
-	res.json({ message: 'deleted' });
+	res.status(200).json({
+		status: "success",
+		waterVolume,
+		time,
+	});
 };
 
 module.exports = editWater;
 
-
-// const editWater = async (req, res) => {
-// 	const { id } = req.params;
-// 	const { dailyNorma } = req.user;
-// 	const { waterVolume } = req.body;
-// 	const persentWater = (waterVolume / dailyNorma) * 100;
-
-
-// 	const updatedWater = await Water.findByIdAndUpdate(id, {
-// 		...req.body,
-// 		persentWater,
-// 	}
-// 		, { new: true });
-// 	if (!updatedWater) {
-// 		throw HttpError(404, 'Not found');
-// 	}
-// 	res.json(updatedWater);
-// };
-
-// module.exports = editWater;
