@@ -21,13 +21,18 @@ const addWater = async (req, res) => {
 		});
 		res.status(201).json(addNewWater);
 	} else {
-		const addupdateWater = await Water.findOneAndUpdate(filter,
+		await Water.findOneAndUpdate(filter,
 			{
 				$inc: { perDay: +1, drankWater: +waterVolume },
 				$push: { waterlist: { waterVolume: waterVolume, time: time, id: uuidv4() } },
 			},
 			{ new: true })
-		res.status(201).json(addupdateWater);
+
+		res.status(201).json({
+			status: "success",
+			waterVolume,
+			time
+		});
 	}
 };
 
