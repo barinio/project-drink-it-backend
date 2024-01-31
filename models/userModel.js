@@ -41,6 +41,7 @@ const userSchema = new Schema(
 		gender: {
 			type: String,
 			enum: genderList,
+			default: 'woman',
 			// required: true,
 		},
 
@@ -85,6 +86,7 @@ const updateUserSchema = Joi.object({
 	email: Joi.string().pattern(emailReg),
 	outdatedPassword: Joi.string().min(8).max(64),
 	newPassword: Joi.string().min(8).max(64),
+	repeatedNewPassword: Joi.string().min(8).max(64),
 });
 
 const updateDailyNormaSchema = Joi.object({
