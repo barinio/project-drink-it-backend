@@ -9,7 +9,7 @@ const editWater = async (req, res) => {
 	const validid = validateID(_id);
 
 	const { time, waterVolume } = req.body;
-	const newTime = new Date(time).toLocaleTimeString();
+	// const newTime = new Date(time).toLocaleTimeString();
 
 	const { waterlist } = await Water.findById(id);
 	const persentWateronid = waterlist.find(keys => keys.id === _id);
@@ -18,7 +18,7 @@ const editWater = async (req, res) => {
 	const edit = await Water.findOneAndUpdate({ _id: id, "waterlist.id": _id },
 		{
 			$inc: { drankWater: -persentWateronid.waterVolume + waterVolume, perDay: -1 },
-			$set: { "waterlist.$.waterVolume": waterVolume, "waterlist.$.time": newTime }
+			$set: { "waterlist.$.waterVolume": waterVolume, "waterlist.$.time": time }
 		}, { new: true }
 	);
 
@@ -29,7 +29,7 @@ const editWater = async (req, res) => {
 	res.status(200).json({
 		status: "success",
 		waterVolume,
-		newTime,
+		time,
 	});
 };
 
