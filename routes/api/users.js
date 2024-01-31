@@ -20,13 +20,13 @@ router.post('/logout', authenticate, ctrl.logout);
 
 router.get('/current', authenticate, ctrl.current);
 
-router.patch('/avatars', authenticate, upload.single('avatar'), ctrl.updateAvatar);
+router.patch('/avatar', authenticate, upload.single('avatar'), ctrl.updateAvatar);
 
-router.patch('/:id/users/info', authenticate, isValidId, ctrl.updateUser);
+router.patch('/info/:id', authenticate, isValidId, validBody(schemas.updateUserSchema), ctrl.updateUser);
 
-// !!!
 router.get('/:id/users/info', authenticate, isValidId, ctrl.getDailyNorma); 
 
 router.patch('/:id/dailynorma', authenticate, isValidId, ctrl.updateDailyNorma);
+
 
 module.exports = router;

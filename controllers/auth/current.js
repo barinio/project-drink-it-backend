@@ -1,5 +1,6 @@
 const current = async (req, res) => {
-	const { email } = req.user;
-	res.json({ email });
+	const { _id, email, userName, dailyNorma, avatarURL, gender } = req.user;
+	// console.log(password);
+	res.json({ _id, email, userName, dailyNorma, avatarURL, gender });
 };
 module.exports = current;
