@@ -9,7 +9,7 @@ const waterSchema = new Schema(
 			type: Number,
 		},
 		date: {
-			type: String,
+			type: Date,
 		},
 		time: {
 			type: String,
@@ -39,8 +39,9 @@ waterSchema.post('save', handleMongooseError);
 
 const addSchema = Joi.object({
 	waterVolume: Joi.number().min(1).max(5000).required(),
-	time: Joi.string().regex(/^([0-9]{2}):([0-9]{2})$/).required(),
+	time: Joi.date().required(),
 });
+// regex(/^([0-9]{2}):([0-9]{2})$/)
 
 
 // const updStutusSchema = Joi.object({
