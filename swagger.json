@@ -407,6 +407,128 @@
 				}
 			}
 		},
+		"/api/users/today": {
+			"patch": {
+				"tags": ["User"],
+				"summary": "Update user data",
+				"security": [{ "Bearer": [] }],
+				"requestBody": {
+					"description": "Get user's water intake for today",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserToday"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Successful operation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserToday"
+								}
+							}
+						}
+					},
+
+					"401": {
+						"description": "Unauthorization",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UnauthorizationResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad request (invalid request body)",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BadRequestBodyResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "User not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotFoundResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/users/month": {
+			"patch": {
+				"tags": ["User"],
+				"summary": "Update user data",
+				"security": [{ "Bearer": [] }],
+				"requestBody": {
+					"description": "Get user's water intake for the month",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserMonth"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Successful operation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserMonth"
+								}
+							}
+						}
+					},
+
+					"401": {
+						"description": "Unauthorization",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UnauthorizationResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad request (invalid request body)",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BadRequestBodyResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "User not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotFoundResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/api/users/watermodel": {
 			"patch": {
 				"tags": ["User"],
@@ -879,6 +1001,26 @@
 					"waterModel": {
 						"type": "string",
 						"description": "Users water model"
+					}
+				}
+			},
+			"UserToday": {
+				"type": "object",
+				"required": ["waterToday"],
+				"properties": {
+					"waterModel": {
+						"type": "string",
+						"description": "Users water today"
+					}
+				}
+			},
+			"UserMonth": {
+				"type": "object",
+				"required": ["waterMonth"],
+				"properties": {
+					"waterModel": {
+						"type": "string",
+						"description": "Users water Monthly"
 					}
 				}
 			},

@@ -24,6 +24,9 @@ router.patch('/avatar', authenticate, upload.single('avatar'), ctrl.updateAvatar
 
 router.patch('/info/:id', authenticate, isValidId, validBody(schemas.updateUserSchema), ctrl.updateUser);
 
-router.patch('/dailynorma/:id', authenticate, isValidId, ctrl.updateDailyNorma);
+router.get('/:id/users/info', authenticate, isValidId, ctrl.getDailyNorma); 
+
+router.patch('/:id/dailynorma', authenticate, isValidId, ctrl.updateDailyNorma);
+
 
 module.exports = router;
