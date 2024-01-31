@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(express.static('public'));
 
 app.use('/api/users', authRouter);
-app.use('/api/waters', watersRouter);
+app.use('/api/user/water', watersRouter);
 
 app.use((req, res) => {
 	res.status(404).json({ message: 'Not found' });
