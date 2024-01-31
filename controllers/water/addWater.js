@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 const addWater = async (req, res) => {
 	const { _id: owner, dailyNorma } = req.user;
 	const { waterVolume, time } = req.body;
-	const newTime = new Date(time).toLocaleTimeString();
+	// const newTime = new Date(time).toLocaleTimeString();
 	const date = new Date().toDateString();
 
 
@@ -19,13 +19,13 @@ const addWater = async (req, res) => {
 			dailyNorma,
 			drankWater: waterVolume,
 			perDay: 1,
-			waterlist: [{ waterVolume: waterVolume, time: newTime, id: uuidv4() }],
+			waterlist: [{ waterVolume: waterVolume, time: time, id: uuidv4() }],
 		});
 
 		res.status(201).json({
 			status: "success",
 			waterVolume,
-			newTime,
+			time,
 		});
 
 	} else {
@@ -40,7 +40,7 @@ const addWater = async (req, res) => {
 		res.status(201).json({
 			status: "success",
 			waterVolume,
-			newTime
+			time,
 		});
 	}
 };
