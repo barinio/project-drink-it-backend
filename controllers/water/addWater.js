@@ -1,10 +1,11 @@
+
 const { Water } = require('../../models');
 const { v4: uuidv4 } = require('uuid');
 
 const addWater = async (req, res) => {
 	const { _id: owner, dailyNorma } = req.user;
 	const { waterVolume, time } = req.body;
-	// const newTime = new Date(time).toLocaleTimeString();
+
 	const date = new Date().toDateString();
 
 
