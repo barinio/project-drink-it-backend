@@ -18,7 +18,7 @@ const waterSchema = new Schema(
 			type: Number
 		},
 		drankWater: {
-			// type: Number
+			type: Number
 		},
 		waterlist: {
 			type: Array

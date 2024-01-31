@@ -4,7 +4,7 @@ const listWaterMonth = async (req, res) => {
 	const { _id: owner } = req.user;
 	// const { date } = req.query;
 	console.log(owner);
-
+	console.log(new Date("2024-01-01").toLocaleDateString());
 	// const water = await Water.aggregate({ owner: owner })
 	// const total = await Water.countDocuments(filter);
 
@@ -20,7 +20,7 @@ const listWaterMonth = async (req, res) => {
 									{
 										$toDate: "$date"
 									},
-									new Date("2024-01-01").toLocaleDateString()
+									new Date("2024-01-27").toLocaleDateString()
 								]
 							},
 							{
