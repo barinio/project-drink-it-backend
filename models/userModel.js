@@ -43,11 +43,23 @@ const userSchema = new Schema(
 			enum: genderList,
 			// required: true,
 		},
-
+		weight: {
+            type: Number,
+			default: 0,
+        },
+        activityTime: {
+            type: Number,
+			default: 0,
+        },
+        willDrink: {
+            type: Number,
+			default: 0,
+        },
 		dailyNorma: {
 			type: Number,
 			default: 0,
 		},
+
 		outdatedPassword: {
 			type: String,
 			// required: [true, 'Set outdated password for user'],
@@ -87,8 +99,13 @@ const updateUserSchema = Joi.object({
 	newPassword: Joi.string().min(8).max(64),
 });
 
+// !!!
 const updateDailyNormaSchema = Joi.object({
 	dailyNorma: Joi.number().required(),
+    gender: Joi.string().valid(...genderList),
+    weight: Joi.number().required(),
+    activityTime: Joi.number().required(),
+    willDrink: Joi.number().required(),
 });
 
 const schemas = {
