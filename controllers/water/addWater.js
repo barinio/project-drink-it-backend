@@ -8,7 +8,7 @@ const addWater = async (req, res) => {
 
 	const date = new Date().toDateString();
 	const id = uuidv4();
-	console.log(id);
+	// console.log(id);
 
 	const filter = { owner, date: date };
 
