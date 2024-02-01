@@ -19,3 +19,10 @@ const getDailyNorma = async (req, res) => {
 };
 
 module.exports = getDailyNorma;
+
+// const getDailyNorma = async (req, res) => {
+// 	const { _id, gender, weight, dailyNorma, activityTime, willDrink } = req.user;
+// 	res.json({ _id, gender, weight, dailyNorma, activityTime, willDrink });
+// };
+
+// module.exports = getDailyNorma;

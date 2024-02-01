@@ -45,17 +45,17 @@ const userSchema = new Schema(
 			// required: true,
 		},
 		weight: {
-            type: Number,
+			type: Number,
 			default: 0,
-        },
-        activityTime: {
-            type: Number,
+		},
+		activityTime: {
+			type: Number,
 			default: 0,
-        },
-        willDrink: {
-            type: Number,
+		},
+		willDrink: {
+			type: Number,
 			default: 0,
-        },
+		},
 		dailyNorma: {
 			type: Number,
 			default: 0,
@@ -104,10 +104,10 @@ const updateUserSchema = Joi.object({
 // !!!
 const updateDailyNormaSchema = Joi.object({
 	dailyNorma: Joi.number().required(),
-    gender: Joi.string().valid(...genderList),
-    weight: Joi.number().required(),
-    activityTime: Joi.number().required(),
-    willDrink: Joi.number().required(),
+	gender: Joi.string().valid(...genderList),
+	weight: Joi.number().required(),
+	activityTime: Joi.number().required(),
+	willDrink: Joi.number().required(),
 });
 
 const schemas = {
