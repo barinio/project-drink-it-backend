@@ -6,7 +6,12 @@ const addWater = async (req, res) => {
 	const { _id: owner, dailyNorma } = req.user;
 	const { waterVolume, time } = req.body;
 
-	const date = new Date().toDateString();
+	const d = new Date();
+	// console.log(d);
+	d.setUTCHours(0, 0, 0, 0);
+	const date = d.toISOString();
+	// console.log(date);
+
 	const id = uuidv4();
 	// console.log(id);
 

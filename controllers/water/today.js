@@ -5,7 +5,13 @@ const { Water } = require('../../models/waterModel');
 const listWaterToday = async (req, res) => {
 	const { _id: owner, dailyNorma } = req.user;
 	const { date } = req.query;
-	const newDate = new Date(date).toDateString();
+
+	const d = new Date(date);
+
+	d.setUTCHours(0, 0, 0, 0);
+	const newDate = d.toISOString();
+
+
 
 	const filter = { owner, date: newDate };
 

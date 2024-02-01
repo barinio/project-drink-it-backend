@@ -1,23 +1,37 @@
+// const { default: mongoose } = require('mongoose');
 const { HttpError } = require('../../helpers');
 const { Water } = require('../../models');
 
 const listWaterMonth = async (req, res) => {
-
+	const { _id: owner } = req.user;
+	console.log(owner);
 	const { date } = req.query;
+
+	const d = new Date(date);
+
+
+	const month = d.getMonth(date);
+	const year = d.getFullYear(date);
+
+	const dateAt = new Date(`${year}-0${month + 1}-01`);
+	dateAt.toISOString();
+
+
+	const dateTo = new Date(`${year}-0${month + 1}-29`)
+	dateTo.toISOString();
+
 
 	if (!date) {
 		throw HttpError(400, 'Bad Request');
 	}
-	const newDate = new Date(date)
-	const month = newDate.getUTCMonth(date);
-	const year = newDate.getFullYear(date);
+
 
 
 	const monthlyResults = await Water.aggregate(
 		[
-			// { $sort: { owner: owner } },
 			{
 				$match: {
+					"owner": owner,
 					$expr: {
 						$and: [
 							{
@@ -25,15 +39,15 @@ const listWaterMonth = async (req, res) => {
 									{
 										$toDate: "$date"
 									},
-									new Date(`${year}-0${month + 1}-01`)
+									dateAt
 								]
 							},
 							{
-								$lt: [
+								$lte: [
 									{
 										$toDate: "$date"
 									},
-									new Date(`${year}-0${month + 1}-31`)
+									dateTo
 								]
 							}
 						]
