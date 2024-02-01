@@ -3,7 +3,7 @@ const { Water } = require('../../models/waterModel');
 
 
 const listWaterToday = async (req, res) => {
-	const { _id: owner } = req.user;
+	const { _id: owner, dailyNorma } = req.user;
 	const { date } = req.query;
 	const newDate = new Date(date).toDateString();
 
@@ -14,12 +14,20 @@ const listWaterToday = async (req, res) => {
 	}
 
 	const water = await Water.find(filter)
-	// if (water.length === 0) {
-	// 	throw HttpError(404, 'Not found');
-
-	// }
-	res.json(water);
-
+	if (water.length === 0) {
+		const newDay = await Water.create({
+			owner,
+			date: newDate,
+			dailyNorma,
+			drankWater: 0,
+			perDay: 0,
+			waterlist: [],
+		});
+		res.status(200).json(newDay);
+	}
+	else {
+		res.json(water);
+	}
 
 };
 

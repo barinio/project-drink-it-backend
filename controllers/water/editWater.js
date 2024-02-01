@@ -16,7 +16,7 @@ const editWater = async (req, res) => {
 
 	const edit = await Water.findOneAndUpdate({ _id: id, "waterlist.id": _id },
 		{
-			$inc: { drankWater: -persentWateronid.waterVolume + waterVolume, perDay: -1 },
+			$inc: { drankWater: -persentWateronid.waterVolume + waterVolume },
 			$set: { "waterlist.$.waterVolume": waterVolume, "waterlist.$.time": time }
 		}, { new: true }
 	);
@@ -29,6 +29,7 @@ const editWater = async (req, res) => {
 		status: "success",
 		waterVolume,
 		time,
+		id: _id,
 	});
 };
 
