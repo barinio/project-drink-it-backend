@@ -1,29 +1,34 @@
+const { HttpError } = require('../../helpers');
 const { Water } = require('../../models/waterModel');
 
+
 const listWaterToday = async (req, res) => {
-	const { _id: owner } = req.user;
-	const { date } = req.body;
+	const { _id: owner, dailyNorma } = req.user;
+	const { date } = req.query;
+	const newDate = new Date(date).toDateString();
 
+	const filter = { owner, date: newDate };
 
-	const filter = { owner, date: date };
+	if (!date) {
+		throw HttpError(400, 'Bad Request');
+	}
 
-	const water = await Water.find(filter);
-	const total = await Water.countDocuments(filter);
-	console.log(water);
-	const persent = await Water.aggregate([
-		{
-			$match: { date: date }
-		},
-		{
-			$group: { _id: '$owner', totalper: { $sum: "$persentWater" } },
-		}
-	])
+	const water = await Water.find(filter)
+	if (water.length === 0) {
+		const newDay = await Water.create({
+			owner,
+			date: newDate,
+			dailyNorma,
+			drankWater: 0,
+			perDay: 0,
+			waterlist: [],
+		});
+		res.status(200).json(newDay);
+	}
+	else {
+		res.json(water);
+	}
 
-	res.json({
-		water,
-		total,
-		persent: persent[0].totalper,
-	});
 };
 
 module.exports = listWaterToday;

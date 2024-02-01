@@ -1,39 +1,62 @@
+const { HttpError } = require('../../helpers');
 const { Water } = require('../../models');
 
 const listWaterMonth = async (req, res) => {
-	const { _id: owner, } = req.user;
-	const { date } = req.body;
+
+	const { date } = req.query;
+
+	if (!date) {
+		throw HttpError(400, 'Bad Request');
+	}
+	const newDate = new Date(date)
+	const month = newDate.getUTCMonth(date);
+	const year = newDate.getFullYear(date);
 
 
-
-	const filter = {
-		owner
-	};
-
-	const water = await Water.find(filter);
-	const total = await Water.countDocuments(filter);
-	const monthlyResults = await Water.aggregate([
-		{
-			$match: {
-				owner: owner, "date": {
-					$gte: new Date("01.01.2024"),
-					$lte: new Date("30.01.2024")
+	const monthlyResults = await Water.aggregate(
+		[
+			// { $sort: { owner: owner } },
+			{
+				$match: {
+					$expr: {
+						$and: [
+							{
+								$gte: [
+									{
+										$toDate: "$date"
+									},
+									new Date(`${year}-0${month + 1}-01`)
+								]
+							},
+							{
+								$lt: [
+									{
+										$toDate: "$date"
+									},
+									new Date(`${year}-0${month + 1}-31`)
+								]
+							}
+						]
+					}
 				}
 			},
-		},
-		{
-			$group: {
-				_id: '$date', totalper: { $sum: "$persentWater" }, totalWaterpe: { $sum: 1 }, daylyNorma: { $last: '$dailyNorma' }
+			{
+				$group: {
+					_id: '$date', drankWater: { $first: "$drankWater" }, perDay: { $first: "$perDay" }, dailyNorma: { $first: "$dailyNorma" }
+				},
 			},
-		}
-	])
+			{
+				$project: {
+					drankWater: "$drankWater",
+					perDay: "$perDay",
+					dailyNorma: "$dailyNorma",
+					persent: { $divide: ["$drankWater", "$dailyNorma"] }
+				}
+			}
+		])
 
-	res.json({
-		// water,
-		// total,
-		monthlyResults,
-		// persent: persent[0].totalper,
-	});
+
+	res.json(monthlyResults);
 };
 
 module.exports = listWaterMonth;

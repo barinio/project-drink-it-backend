@@ -1,9 +1,12 @@
 const gravatar = require('gravatar');
 const bcrypt = require('bcrypt');
 const { randomUUID } = require('crypto');
+const jwt = require('jsonwebtoken');
 
 const { User } = require('../../models');
 const { HttpError } = require('../../helpers');
+
+const { SECRET_KEY } = process.env;
 
 // const { BASE_URL } = process.env;
 
@@ -16,14 +19,17 @@ const register = async (req, res) => {
 	}
 
 	const hashPassword = await bcrypt.hash(password, 10);
-	const avatarURL = gravatar.url(email);
+	const avatarURL = gravatar.url(email, { protocol: 'http', s: '100' });
 	const verificationToken = randomUUID();
+	const userName = email.split('@')[0];
+	console.log(userName);
 
 	const newUser = await User.create({
 		...req.body,
 		password: hashPassword,
 		avatarURL,
 		verificationToken,
+		userName,
 	});
 
 	// const verifyEmail = {
@@ -32,7 +38,11 @@ const register = async (req, res) => {
 	// 	html: `<a target="_blank" href="${BASE_URL}/api/auth/verify/${verificationToken}">Click verify email</a>`,
 	// };
 	// await sendEmail(verifyEmail);
-	res.status(201).json({ user: { email: newUser.email } });
+	const payload = { id: newUser._id };
+	const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '23h' });
+	await User.findByIdAndUpdate(newUser._id, { token });
+
+	res.status(201).json({ token, user: { email: newUser.email, userName: newUser.userName } });
 };
 
 module.exports = register;

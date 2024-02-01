@@ -1,33 +1,49 @@
+
 const { Water } = require('../../models');
 const { v4: uuidv4 } = require('uuid');
 
 const addWater = async (req, res) => {
 	const { _id: owner, dailyNorma } = req.user;
 	const { waterVolume, time } = req.body;
-	const date = new Date().toLocaleDateString();
-	const persentWater = (waterVolume / dailyNorma) * 100;
+
+	const date = new Date().toDateString();
+	const id = uuidv4();
+	// console.log(id);
 
 	const filter = { owner, date: date };
 
 	const searchfordate = await Water.findOne(filter);
 	if (!searchfordate) {
-		const addNewWater = await Water.create({
+
+		await Water.create({
 			owner,
 			date,
 			dailyNorma,
-			persent: persentWater,
-			perDay: 1,
-			waterlist: [{ waterVolume: waterVolume, time: time, persentWater: persentWater, id: uuidv4() }],
+			drankWater: waterVolume,
+			perDay: +1,
+			waterlist: [{ waterVolume: waterVolume, time: time, id }],
 		});
-		res.status(201).json(addNewWater);
+
+		res.status(201).json({
+			status: "success",
+
+		});
+
 	} else {
-		const addupdateWater = await Water.findOneAndUpdate(filter,
+
+		await Water.findOneAndUpdate(filter,
 			{
-				$inc: { persent: +persentWater, perDay: +1 },
-				$push: { waterlist: { waterVolume: waterVolume, time: time, persentWater: persentWater, id: uuidv4() } },
+				$inc: { perDay: +1, drankWater: +waterVolume },
+				$push: { waterlist: { waterVolume: waterVolume, time: time, id } },
 			},
 			{ new: true })
-		res.status(201).json(addupdateWater);
+
+		res.status(201).json({
+			status: "success",
+			waterVolume,
+			time,
+			id,
+		});
 	}
 };
 
