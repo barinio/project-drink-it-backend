@@ -7,7 +7,8 @@ const addWater = async (req, res) => {
 	const { waterVolume, time } = req.body;
 
 	const date = new Date().toDateString();
-
+	const id = uuidv4();
+	console.log(id);
 
 	const filter = { owner, date: date };
 
@@ -19,14 +20,13 @@ const addWater = async (req, res) => {
 			date,
 			dailyNorma,
 			drankWater: waterVolume,
-			perDay: 1,
-			waterlist: [{ waterVolume: waterVolume, time: time, id: uuidv4() }],
+			perDay: +1,
+			waterlist: [{ waterVolume: waterVolume, time: time, id }],
 		});
 
 		res.status(201).json({
 			status: "success",
-			waterVolume,
-			time,
+
 		});
 
 	} else {
@@ -34,7 +34,7 @@ const addWater = async (req, res) => {
 		await Water.findOneAndUpdate(filter,
 			{
 				$inc: { perDay: +1, drankWater: +waterVolume },
-				$push: { waterlist: { waterVolume: waterVolume, time: time, id: uuidv4() } },
+				$push: { waterlist: { waterVolume: waterVolume, time: time, id } },
 			},
 			{ new: true })
 
@@ -42,6 +42,7 @@ const addWater = async (req, res) => {
 			status: "success",
 			waterVolume,
 			time,
+			id,
 		});
 	}
 };
