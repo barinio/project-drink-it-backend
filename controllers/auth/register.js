@@ -42,7 +42,8 @@ const register = async (req, res) => {
 	const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '23h' });
 	await User.findByIdAndUpdate(newUser._id, { token });
 
-	res.status(201).json({ token, user: { email: newUser.email, userName: newUser.userName } });
+	// res.status(201).json({ token, user: { email: newUser.email, userName: newUser.userName } })
+	res.status(201).json({ token, user: newUser });
 };
 
 module.exports = register;
