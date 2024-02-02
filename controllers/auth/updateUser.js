@@ -20,7 +20,8 @@ const updateUser = async (req, res) => {
 	if (!user) {
 		throw HttpError(401, 'Email or password is wrong');
 	}
-	console.log('user.password:', user.password);
+
+	// console.log('user.password:', user.password);
 
 	if (outdatedPassword) {
 		const passwordCompare = await bcrypt.compare(outdatedPassword, user.password);
@@ -29,15 +30,27 @@ const updateUser = async (req, res) => {
 		}
 	}
 
-	if (!outdatedPassword && newPassword && repeatedNewPassword && repeatedNewPassword !== newPassword) {
+	if (!outdatedPassword && newPassword) {
+		throw HttpError(401, 'outdated password is absent');
+	} else if (!outdatedPassword && repeatedNewPassword) {
+		throw HttpError(401, 'outdated password is absent');
+	} else if (outdatedPassword && !newPassword) {
+		throw HttpError(401, 'newPassword  is absent');
+	} else if (outdatedPassword && !repeatedNewPassword) {
+		throw HttpError(401, 'repeatedNewPassword  is absent');
+	} else if (!newPassword && repeatedNewPassword) {
+		throw HttpError(401, 'newPassword  is absent');
+	} else if (newPassword && !repeatedNewPassword) {
+		throw HttpError(401, 'repeatedNewPassword is absent');
+	} else if (newPassword !== repeatedNewPassword) {
 		throw HttpError(401, 'new password and repeated new password must be the same');
-	}
-
-	if (newPassword && repeatedNewPassword && repeatedNewPassword === newPassword) {
+	} else if (outdatedPassword && newPassword === repeatedNewPassword) {
 		const newHashPassword = await bcrypt.hash(newPassword, 10);
-		console.log('newHashPassword:', newHashPassword);
+		// console.log('newHashPassword:', newHashPassword);
 		user.password = newHashPassword;
-		console.log('user.password:', user.password);
+		// console.log('user.password:', user.password);
+	} else {
+		console.log('something went wrong');
 	}
 
 	await User.findByIdAndUpdate(
@@ -49,9 +62,6 @@ const updateUser = async (req, res) => {
 			dailyNorma,
 			avatarURL,
 			gender,
-			// outdatedPassword: user.outdatedPassword,
-			// newPassword: user.newPassword,
-			// repeatedNewPassword: user.repeatedNewPassword,
 		},
 		{ new: true }
 	);
@@ -63,22 +73,7 @@ const updateUser = async (req, res) => {
 		dailyNorma,
 		avatarURL,
 		gender,
-		outdatedPassword,
-		newPassword,
-		repeatedNewPassword,
 	});
 };
 
 module.exports = updateUser;
-
-// console.log(outdatedPassword);
-// console.log(user.password);
-// const hashPasswordNew = await bcrypt.hash(outdatedPassword, 10);
-// console.log(outdatedPassword);
-
-// const passwordCompare = await bcrypt.compare(outdatedPassword, hashPasswordNew);
-// console.log(passwordCompare);
-
-// res.json({ user });
-
-// await User.findByIdAndUpdate(id, { password: user.password });
