@@ -14,7 +14,7 @@ const removeWater = async (req, res) => {
 
 	const { waterlist } = await Water.findById(id);
 	const persentWateronid = waterlist.find(keys => keys.id === _id);
-	// console.log(persentWateronid);
+
 
 	if (!persentWateronid) {
 		throw HttpError(404, 'Not found');
