@@ -24,13 +24,9 @@ router.patch('/avatar', authenticate, upload.single('avatar'), ctrl.updateAvatar
 
 router.patch('/info/:id', authenticate, isValidId, validBody(schemas.updateUserSchema), ctrl.updateUser);
 
-// router.get('/dailynorma/:id', authenticate, isValidId, ctrl.getDailyNorma);
+router.get('/dailynorma', authenticate, isValidId, ctrl.getDailyNorma);
 
-// router.patch('/dailynorma/:id', authenticate, isValidId, validBody(schemas.updateDailyNormaSchema), ctrl.updateDailyNorma);
-
-router.get('/api/users/dailynorma', authenticate, isValidId, ctrl.getDailyNorma);
-
-router.patch('/api/users/dailynorma', authenticate, isValidId, validBody(schemas.updateDailyNormaSchema), ctrl.updateDailyNorma);
+router.patch('/dailynorma', authenticate, isValidId, validBody(schemas.updateDailyNormaSchema), ctrl.updateDailyNorma);
 
 
 
