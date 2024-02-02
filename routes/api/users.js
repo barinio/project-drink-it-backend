@@ -24,9 +24,12 @@ router.patch('/avatar', authenticate, upload.single('avatar'), ctrl.updateAvatar
 
 router.patch('/info/:id', authenticate, isValidId, validBody(schemas.updateUserSchema), ctrl.updateUser);
 
-router.get('/dailynorma/:id', authenticate, isValidId, ctrl.getDailyNorma);
+// router.get('/dailynorma/:id', authenticate, isValidId, ctrl.getDailyNorma);
 
-router.patch('/dailynorma/:id', authenticate, isValidId, validBody(schemas.updateDailyNormaSchema), ctrl.updateDailyNorma);
+// router.patch('/dailynorma/:id', authenticate, isValidId, validBody(schemas.updateDailyNormaSchema), ctrl.updateDailyNorma);
+router.get('/dailyNorma', authenticate, isValidId, ctrl.getDailyNorma);
+
+router.patch('/dailyNorma', authenticate, isValidId, validBody(schemas.updateDailyNormaSchema), ctrl.updateDailyNorma);
 
 
 module.exports = router;

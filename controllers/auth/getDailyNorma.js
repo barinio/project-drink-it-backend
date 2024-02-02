@@ -36,25 +36,19 @@ const { HttpError } = require('../helpers');
 
 const getDailyNorma = async (req, res) => {
   try {
-    const { id } = req.params;
-    const user = await User.findById(id);
+    const user = await User.findById(req.user.id);
+    const dailyNormaData = {
+      dailyNorma: user.dailyNorma || calculateDailyNorma(user),
+      weight: user.weight,
+      gender: user.gender,
+      activityTime: user.activityTime,
+      willDrink: user.willDrink,
+    };
 
-    if (!user) {
-      throw HttpError(404, 'User not found');
-    }
-
-    const { weight, gender, activityTime, willDrink, dailyNorma } = user;
-
-    res.status(200).json({
-      weight,
-      gender,
-      activityTime,
-      willDrink,
-      dailyNorma,
-    });
+    return res.status(200).json(dailyNormaData);
   } catch (error) {
-    res.status(error.status || 500).json({ error: error.message });
+    throw HttpError(404, 'Not found');
   }
 };
 
-module.exports = { getDailyNorma };
+module.exports = getDailyNorma;

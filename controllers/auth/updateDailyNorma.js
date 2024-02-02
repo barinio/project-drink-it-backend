@@ -18,28 +18,27 @@ const { HttpError } = require('../helpers');
 
 const updateDailyNorma = async (req, res) => {
 	try {
-	  const { id } = req.params;
-	  const { dailyNorma, gender, weight, activityTime, willDrink } = req.body;
-  
-	  const updatedUser = await User.findByIdAndUpdate(
-		id,
-		{
-		  dailyNorma,
-		  gender,
-		  weight,
-		  activityTime,
-		  willDrink,
-		},
-		{ new: true }
-	  );
-  
-	  if (!updatedUser) {
-		throw HttpError(404, 'User not found');
+	  const { error } = schemas.updateDailyNormaSchema.validate(req.body);
+	  if (error) {
+		return res.status(400).json({ error: error.details[0].message });
 	  }
   
-	  res.status(200).json(updatedUser);
+	  const updatedUserData = {
+		dailyNorma: req.body.dailyNorma,
+		weight: req.body.weight,
+		gender: req.body.gender,
+		activityTime: req.body.activityTime,
+		willDrink: req.body.willDrink,
+	  };
+  
+	  const user = await User.findByIdAndUpdate(req.user.id, updatedUserData, { new: true });
+	  if (!user) {
+		return res.status(404).json({ error: 'User not found' });
+	  }
+  
+	  return res.status(200).json(updatedUserData);
 	} catch (error) {
-	  res.status(error.status || 500).json({ error: error.message });
+		throw HttpError(404, 'Not found');
 	}
   };
   
