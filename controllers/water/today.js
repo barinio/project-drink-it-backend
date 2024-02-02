@@ -1,7 +1,6 @@
 const { HttpError } = require('../../helpers');
 const { Water } = require('../../models/waterModel');
 
-
 const listWaterToday = async (req, res) => {
 	const { _id: owner, dailyNorma } = req.user;
 	const { date } = req.query;
@@ -13,15 +12,13 @@ const listWaterToday = async (req, res) => {
 	d.setUTCHours(0, 0, 0, 0);
 	const newDate = d.toISOString();
 
-
-
 	const filter = { owner, date: newDate };
 
 	if (!date) {
 		throw HttpError(400, 'Bad Request');
 	}
 
-	const water = await Water.find(filter)
+	const water = await Water.find(filter);
 	if (water.length === 0) {
 		const newDay = await Water.create({
 			owner,
@@ -32,11 +29,9 @@ const listWaterToday = async (req, res) => {
 			waterlist: [],
 		});
 		res.status(200).json(newDay);
-	}
-	else {
+	} else {
 		res.json(water);
 	}
-
 };
 
 module.exports = listWaterToday;
