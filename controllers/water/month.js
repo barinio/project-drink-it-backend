@@ -12,11 +12,25 @@ const listWaterMonth = async (req, res) => {
 	const month = d.getMonth(date);
 	const year = d.getFullYear(date);
 
+
+	function lastDay(month, year) {
+		if (month === 0 || month === 2 || month === 4 || month === 6 || month === 7 || month === 9 || month === 11) {
+			return 31
+		} else if (month === 3 || month === 5 || month === 8 || month === 10) {
+			return 30
+		} else if (month === 1 && year % 4 === 0) {
+			return 29
+		} else if (month === 1 && year % 4 !== 0)
+			return 28
+	}
+
+
+
 	const dateAt = new Date(`${year}-0${month + 1}-01`);
 	dateAt.toISOString();
 
 
-	const dateTo = new Date(`${year}-0${month + 1}-31`)
+	const dateTo = new Date(`${year}-0${month + 1}-${lastDay(month, year)}`)
 	dateTo.toISOString();
 
 
@@ -65,7 +79,8 @@ const listWaterMonth = async (req, res) => {
 					dailyNorma: "$dailyNorma",
 					persent: { $multiply: [{ $divide: ["$drankWater", "$dailyNorma"] }, 100] }
 				}
-			}
+			},
+
 		])
 
 
