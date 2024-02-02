@@ -28,9 +28,9 @@ router.patch('/info/:id', authenticate, isValidId, validBody(schemas.updateUserS
 
 // router.patch('/dailynorma/:id', authenticate, isValidId, validBody(schemas.updateDailyNormaSchema), ctrl.updateDailyNorma);
 
-router.get('/dailynorma', authenticate, isValidId, ctrl.getDailyNorma);
+router.get('/api/users/dailynorma', authenticate, isValidId, ctrl.getDailyNorma);
 
-router.patch('/dailynorma', authenticate, isValidId, validBody(schemas.updateDailyNormaSchema), ctrl.updateDailyNorma);
+router.patch('/api/users/dailynorma', authenticate, isValidId, validBody(schemas.updateDailyNormaSchema), ctrl.updateDailyNorma);
 
 
 
