@@ -26,7 +26,7 @@ router.patch('/info/:id', authenticate, isValidId, validBody(schemas.updateUserS
 
 router.get('/dailynorma/:id', authenticate, isValidId, ctrl.getDailyNorma); 
 
-router.put('/dailynorma/:id', authenticate, isValidId, validBody(schemas.updateDailyNormaSchema), ctrl.updateDailyNorma);
+router.patch('/dailynorma/:id', authenticate, isValidId, validBody(schemas.updateDailyNormaSchema), ctrl.updateDailyNorma);
 
 
 module.exports = router;
