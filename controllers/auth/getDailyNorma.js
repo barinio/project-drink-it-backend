@@ -38,7 +38,7 @@ const getDailyNorma = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
     const dailyNormaData = {
-      dailyNorma: user.dailyNorma || calculateDailyNorma(user),
+      dailyNorma: user.dailyNorma,
       weight: user.weight,
       gender: user.gender,
       activityTime: user.activityTime,
