@@ -27,9 +27,14 @@ router.patch('/info/:id', authenticate, isValidId, validBody(schemas.updateUserS
 // router.get('/dailynorma/:id', authenticate, isValidId, ctrl.getDailyNorma);
 
 // router.patch('/dailynorma/:id', authenticate, isValidId, validBody(schemas.updateDailyNormaSchema), ctrl.updateDailyNorma);
-router.get('/dailynorma', authenticate, isValidId, ctrl.getDailyNorma);
+// router.get('/dailynorma', authenticate, isValidId, ctrl.getDailyNorma);
 
 router.patch('/dailynorma', authenticate, isValidId, validBody(schemas.updateDailyNormaSchema), ctrl.updateDailyNorma);
+
+router.get('/dailynorma', (req, res) => {
+    console.log(`Received request to /dailynorma: ${req.originalUrl}`);
+    ctrl.getDailyNorma(req, res); // Make sure to call your controller method
+  });
 
 
 module.exports = router;
