@@ -13,15 +13,11 @@ const listWaterMonth = async (req, res) => {
 	const year = d.getFullYear(date);
 
 
-	function lastDay(month, year) {
-		if (month === 0 || month === 2 || month === 4 || month === 6 || month === 7 || month === 9 || month === 11) {
-			return 31
-		} else if (month === 3 || month === 5 || month === 8 || month === 10) {
-			return 30
-		} else if (month === 1 && year % 4 === 0) {
-			return 29
-		} else if (month === 1 && year % 4 !== 0)
-			return 28
+	const lastDay = (month, year) => {
+		if (month === 0 || month === 2 || month === 4 || month === 6 || month === 7 || month === 9 || month === 11) return 31;
+		if (month === 3 || month === 5 || month === 8 || month === 10) return 30;
+		if (month === 1 && year % 4 === 0) return 29;
+		if (month === 1 && year % 4 !== 0) return 28;
 	}
 
 
@@ -32,7 +28,7 @@ const listWaterMonth = async (req, res) => {
 
 	const dateTo = new Date(`${year}-0${month + 1}-${lastDay(month, year)}`)
 	dateTo.toISOString();
-
+	console.log(dateTo);
 
 	if (!date) {
 		throw HttpError(400, 'Bad Request');
@@ -80,7 +76,9 @@ const listWaterMonth = async (req, res) => {
 					persent: { $multiply: [{ $divide: ["$drankWater", "$dailyNorma"] }, 100] }
 				}
 			},
-
+			// {
+			// 	$sort{}
+			// }
 		])
 
 
