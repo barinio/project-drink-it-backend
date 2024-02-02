@@ -4,7 +4,6 @@ const { Water } = require('../../models');
 
 const listWaterMonth = async (req, res) => {
 	const { _id: owner } = req.user;
-	console.log(owner);
 	const { date } = req.query;
 
 	const d = new Date(date);
@@ -17,7 +16,7 @@ const listWaterMonth = async (req, res) => {
 	dateAt.toISOString();
 
 
-	const dateTo = new Date(`${year}-0${month + 1}-29`)
+	const dateTo = new Date(`${year}-0${month + 1}-31`)
 	dateTo.toISOString();
 
 
@@ -64,7 +63,7 @@ const listWaterMonth = async (req, res) => {
 					drankWater: "$drankWater",
 					perDay: "$perDay",
 					dailyNorma: "$dailyNorma",
-					persent: { $divide: ["$drankWater", "$dailyNorma"] }
+					persent: { $multiply: [{ $divide: ["$drankWater", "$dailyNorma"] }, 100] }
 				}
 			}
 		])

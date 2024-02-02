@@ -6,14 +6,14 @@ const addWater = async (req, res) => {
 	const { _id: owner, dailyNorma } = req.user;
 	const { waterVolume, time } = req.body;
 
+	const userDailyNorma = dailyNorma > 0 ? dailyNorma : 2000;
 	const d = new Date();
-	// console.log(d);
+
 	d.setUTCHours(0, 0, 0, 0);
 	const date = d.toISOString();
-	// console.log(date);
 
 	const id = uuidv4();
-	// console.log(id);
+
 
 	const filter = { owner, date: date };
 
@@ -23,7 +23,7 @@ const addWater = async (req, res) => {
 		await Water.create({
 			owner,
 			date,
-			dailyNorma,
+			dailyNorma: userDailyNorma,
 			drankWater: waterVolume,
 			perDay: +1,
 			waterlist: [{ waterVolume: waterVolume, time: time, id }],
@@ -31,6 +31,9 @@ const addWater = async (req, res) => {
 
 		res.status(201).json({
 			status: "success",
+			waterVolume,
+			time,
+			id,
 
 		});
 

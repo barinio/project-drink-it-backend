@@ -6,6 +6,8 @@ const listWaterToday = async (req, res) => {
 	const { _id: owner, dailyNorma } = req.user;
 	const { date } = req.query;
 
+	const userDailyNorma = dailyNorma > 0 ? dailyNorma : 2000;
+
 	const d = new Date(date);
 
 	d.setUTCHours(0, 0, 0, 0);
@@ -24,7 +26,7 @@ const listWaterToday = async (req, res) => {
 		const newDay = await Water.create({
 			owner,
 			date: newDate,
-			dailyNorma,
+			dailyNorma: userDailyNorma,
 			drankWater: 0,
 			perDay: 0,
 			waterlist: [],
