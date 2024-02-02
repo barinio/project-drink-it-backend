@@ -8,6 +8,7 @@ const { SECRET_KEY } = process.env;
 
 const login = async (req, res) => {
 	const { email, password } = req.body;
+
 	const user = await User.findOne({ email });
 
 	if (!user) {
@@ -27,8 +28,36 @@ const login = async (req, res) => {
 	const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '23h' });
 	await User.findByIdAndUpdate(user._id, { token });
 
-	// res.json({ token, user: { email } });
-	res.json({ token, user });
+	const {
+		_id,
+		avatarURL,
+		verify,
+		verificationToken,
+		userName,
+		gender,
+		weight,
+		activityTime,
+		willDrink,
+		dailyNorma,
+	} = user;
+
+	res.json({
+		token,
+		user: {
+			_id,
+			email,
+			avatarURL,
+			verify,
+			verificationToken,
+			userName,
+			gender,
+			weight,
+			activityTime,
+			willDrink,
+			dailyNorma,
+		},
+	});
+	// res.json(user);
 };
 
 module.exports = login;

@@ -22,7 +22,7 @@ const register = async (req, res) => {
 	const avatarURL = gravatar.url(email, { protocol: 'http', s: '100' });
 	const verificationToken = randomUUID();
 	const userName = email.split('@')[0];
-	console.log(userName);
+	const dailyNorma = 2;
 
 	const newUser = await User.create({
 		...req.body,
@@ -30,6 +30,7 @@ const register = async (req, res) => {
 		avatarURL,
 		verificationToken,
 		userName,
+		dailyNorma,
 	});
 
 	// const verifyEmail = {
@@ -42,8 +43,17 @@ const register = async (req, res) => {
 	const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '23h' });
 	await User.findByIdAndUpdate(newUser._id, { token });
 
-	// res.status(201).json({ token, user: { email: newUser.email, userName: newUser.userName } })
-	res.status(201).json({ token, user: newUser });
+	res.status(201).json({
+		token,
+		user: {
+			_id: newUser.id,
+			email: newUser.email,
+			userName: newUser.userName,
+			avatarURL: newUser.avatarURL,
+			verificationToken: newUser.verificationToken,
+			dailyNorma: newUser.dailyNorma,
+		},
+	});
 };
 
 module.exports = register;
