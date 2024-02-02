@@ -76,9 +76,9 @@ const listWaterMonth = async (req, res) => {
 					persent: { $multiply: [{ $divide: ["$drankWater", "$dailyNorma"] }, 100] }
 				}
 			},
-			// {
-			// 	$sort{}
-			// }
+			{
+				$sort: { "_id": 1 }
+			}
 		])
 
 
