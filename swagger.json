@@ -13,6 +13,7 @@
 	"consumes": ["application/json"],
 	"produces": ["application/json"],
 	"servers": [{ "url": "http://localhost:3000" }],
+
 	"tags": [
 		{
 			"name": "Auth",
@@ -134,21 +135,11 @@
 					},
 
 					"401": {
-						"description": "Unauthorization",
+						"description": "User not authorized",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/UnauthorizationResponse"
-								}
-							}
-						}
-					},
-					"404": {
-						"description": "User not found",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/NotFoundResponse"
+									"$ref": "#/components/schemas/NotAuthorizationResponse"
 								}
 							}
 						}
@@ -156,7 +147,7 @@
 				}
 			}
 		},
-		"/api/users/verify/:verificationToken": {
+		"/api/users/verify/{verificationToken}": {
 			"get": {
 				"tags": ["Auth"],
 				"summary": "User verify",
@@ -166,7 +157,7 @@
 						"in": "path",
 						"required": true,
 						"schema": { "type": "string" },
-						"description": "Unique id"
+						"description": "Unique verification token"
 					}
 				],
 				"responses": {
@@ -175,7 +166,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ResendEmailResponse"
+									"$ref": "#/components/schemas/VerifyEmailResponse"
 								}
 							}
 						}
@@ -262,7 +253,7 @@
 				"security": [{ "Bearer": [] }],
 				"responses": {
 					"200": {
-						"description": "Successful operation",
+						"description": "Get current users data",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -273,21 +264,11 @@
 					},
 
 					"401": {
-						"description": "Unauthorization",
+						"description": "User not authorized",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/UnauthorizationResponse"
-								}
-							}
-						}
-					},
-					"404": {
-						"description": "User not found",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/NotFoundResponse"
+									"$ref": "#/components/schemas/NotAuthorizationResponse"
 								}
 							}
 						}
@@ -751,21 +732,11 @@
 					},
 
 					"401": {
-						"description": "Unauthorization",
+						"description": "User not authorized",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/UnauthorizationResponse"
-								}
-							}
-						}
-					},
-					"404": {
-						"description": "User not found",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/NotFoundResponse"
+									"$ref": "#/components/schemas/NotAuthorizationResponse"
 								}
 							}
 						}
@@ -786,6 +757,8 @@
 						"format": "email"
 					},
 					"password": {
+						"minLength": 8,
+						"maxLength": 64,
 						"type": "string",
 						"description": "User's password must have minimum 8 and max 64 symbols",
 						"example": "qwerty123"
@@ -806,15 +779,36 @@
 			"RegistrationResponse": {
 				"type": "object",
 				"properties": {
+					"_id": {
+						"type": "string",
+						"description": "User's id",
+						"example": "65b27e60a97a5a32beabeff3"
+					},
 					"email": {
 						"type": "string",
 						"description": "User's email",
 						"format": "email"
 					},
-					"_id": {
+
+					"userName": {
 						"type": "string",
-						"description": "User's id",
-						"example": "65b27e60a97a5a32beabeff3"
+						"description": "User's name",
+						"example": "Edik Huloian"
+					},
+					"verificationToken": {
+						"type": "string",
+						"description": "Unique verification token",
+						"example": "f480ddea-3bad-437c-829c-e4419758271c"
+					},
+					"avatarURL": {
+						"type": "string",
+						"description": "User's avatarURL",
+						"example": "http://www.gravatar.com/avatar/cff3cdb87812ab5158bcfa406ab3f58d?s=100"
+					},
+					"dailyNorma": {
+						"type": "number",
+						"description": "User's daily  waters norma in liters",
+						"example": 2
 					}
 				},
 
@@ -828,6 +822,17 @@
 						"type": "string",
 						"description": "successful send verify email",
 						"example": "successful send verify email "
+					}
+				}
+			},
+			"VerifyEmailResponse": {
+				"type": "object",
+				"required": ["message"],
+				"properties": {
+					"message": {
+						"type": "string",
+						"description": "Verification successful",
+						"example": "Verification successful"
 					}
 				}
 			},
@@ -874,28 +879,82 @@
 					"message": {
 						"type": "string",
 						"description": "error message",
-						"example": "Email already in use"
+						"example": "Email in use"
 					}
 				}
 			},
 			"AuthorizationResponse": {
 				"type": "object",
-				"required": ["email", "_id", "token"],
+				"required": ["user", "token"],
 				"properties": {
-					"email": {
-						"type": "string",
-						"description": "User's email",
-						"format": "email"
-					},
-					"_id": {
-						"type": "string",
-						"description": "User's id",
-						"example": "65b27e60a97a5a32beabeff3"
-					},
 					"token": {
 						"type": "string",
 						"description": "Unique JWT",
 						"example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjI3ZTVlYTk3YTVhMzJiZWFiZWZlNSIsImlhdCI6MTcwNjE5NjU3NSwiZXhwIjoxNzA2Mjc5Mzc1fQ.i6mtVESoGHkZM92BrWnDkPxT2kfAi9yM45XpQbXN2zQ"
+					},
+					"user": {
+						"type": "object",
+						"required": [
+							"willDrink",
+							"activityTime",
+							"weight",
+							"gender",
+							"dailyNorma",
+							"avatarURL",
+							"userName",
+							"email",
+							"_id"
+						],
+						"properties": {
+							"_id": {
+								"type": "string",
+								"description": "User's id",
+								"example": "65b27e60a97a5a32beabeff3"
+							},
+							"email": {
+								"type": "string",
+								"description": "User's email",
+								"format": "email"
+							},
+
+							"userName": {
+								"type": "string",
+								"description": "User's name",
+								"example": "Edik Huloian"
+							},
+
+							"avatarURL": {
+								"type": "string",
+								"description": "User's avatarURL",
+								"example": "http://www.gravatar.com/avatar/cff3cdb87812ab5158bcfa406ab3f58d?s=100"
+							},
+							"dailyNorma": {
+								"type": "number",
+								"description": "User's daily  waters norma in liters",
+								"example": 2
+							},
+
+							"gender": {
+								"description": "User's gender",
+								"example": "woman",
+								"enum": ["woman", "man"]
+							},
+							"weight": {
+								"description": "User's weight",
+								"type": "number",
+								"example": "60"
+							},
+							"activityTime": {
+								"description": "User's activity time",
+								"type": "number",
+								"example": "5"
+							},
+							"willDrink": {
+								"description": "User's will drink",
+								"type": "number",
+								"example": "5"
+							}
+						}
 					}
 				}
 			},
@@ -911,39 +970,54 @@
 					}
 				}
 			},
+			"NotAuthorizationResponse": {
+				"type": "object",
+				"required": ["message"],
+				"properties": {
+					"message": {
+						"type": "string",
+						"description": "error message",
+
+						"example": "Not authorized"
+					}
+				}
+			},
 			"CurrentUserResponse": {
 				"type": "object",
 				"required": ["email", "_id"],
 				"properties": {
-					"email": {
-						"type": "string",
-						"description": "User's email",
-						"format": "email"
-					},
 					"_id": {
 						"type": "string",
 						"description": "User's id",
 						"example": "65b27e60a97a5a32beabeff3"
 					},
-					"gender": {
-						"description": "User's gender",
-						"example": "woman",
-						"enum": ["woman", "man"]
+					"email": {
+						"type": "string",
+						"description": "User's email",
+						"format": "email"
 					},
-					"name": {
+
+					"userName": {
 						"type": "string",
 						"description": "User's name",
 						"example": "Edik Huloian"
 					},
-					"outdatedPassword": {
+
+					"avatarURL": {
 						"type": "string",
-						"description": "User's outdated password  must have minimum 8 and max 64 symbols",
-						"example": "qwerty123"
+						"description": "User's avatarURL",
+						"example": "http://www.gravatar.com/avatar/cff3cdb87812ab5158bcfa406ab3f58d?s=100"
 					},
-					"newPassword": {
-						"type": "string",
-						"description": "User's new password  must have minimum 8 and max 64 symbols",
-						"example": "qwerty123"
+					"dailyNorma": {
+						"type": "number",
+						"description": "User's daily  waters norma in liters",
+						"example": 2
+					},
+
+					"gender": {
+						"description": "User's gender",
+						"example": "woman",
+						"enum": ["woman", "man"]
 					}
 				}
 			},
@@ -1050,7 +1124,7 @@
 					"avatarURL": {
 						"type": "string",
 						"description": "User's avatarURL",
-						"example": "string"
+						"example": "avatars\\65bd3a3571f5490ab09db11d_favicon-16x16.png"
 					}
 				}
 			},
