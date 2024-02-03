@@ -421,7 +421,7 @@
 					},
 
 					"401": {
-						"description": "Unauthorization",
+						"description": "Not authorization",
 						"content": {
 							"application/json": {
 								"schema": {
