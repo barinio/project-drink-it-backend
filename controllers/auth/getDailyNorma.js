@@ -5,7 +5,8 @@ const { HttpError } = require('../../helpers');
 const getDailyNorma = async (req, res) => {
   try {
     // Retrieve user's information including dailyNorma from the database
-    const { _id } = req.user;
+    const { _id } = req.query;
+	  const { id } = req.params;
 
     const user = await User.findById(_id);
 
