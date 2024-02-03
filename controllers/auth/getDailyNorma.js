@@ -1,27 +1,27 @@
 const { User } = require('../../models');
 const { HttpError } = require('../../helpers');
-// const { schemas } = require('../models/userModel');
 
 const getDailyNorma = async (req, res) => {
   try {
     // Retrieve user's information including dailyNorma from the database
-    const { _id } = req.query;
-	  const { id } = req.params;
+    const { id } = req.params; // Change to req.params to get the user ID from the route params
 
-    const user = await User.findById(_id);
+    const user = await User.findById(id);
 
     if (!user) {
       throw HttpError(404, 'User not found');
     }
 
+    // Destructure user object with default values
     const {
       dailyNorma = 0,
       weight = 0,
       gender = '',
       activityTime = 0,
-      willDrink = 0,
+      willDrink = false, // Assuming willDrink is a boolean property
     } = user;
 
+    // Return the extracted properties in the response
     res.status(200).json({
       dailyNorma,
       weight,
