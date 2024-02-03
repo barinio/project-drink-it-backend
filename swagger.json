@@ -276,11 +276,20 @@
 				}
 			}
 		},
-		"/api/users/info": {
+		"/api/users/info/{id}": {
 			"patch": {
 				"tags": ["User"],
 				"summary": "Update user data",
 				"security": [{ "Bearer": [] }],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": { "type": "string" },
+						"description": "Unique users id"
+					}
+				],
 				"requestBody": {
 					"description": "Users new data",
 					"required": true,
@@ -305,21 +314,21 @@
 					},
 
 					"401": {
-						"description": "Unauthorization",
+						"description": "Not authorization",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/UnauthorizationResponse"
+									"$ref": "#/components/schemas/NotAuthorizationUpdateUserResponse"
 								}
 							}
 						}
 					},
 					"404": {
-						"description": "User not found",
+						"description": "Id is not a valid",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/NotFoundResponse"
+									"$ref": "#/components/schemas/NotValidIdResponse"
 								}
 							}
 						}
@@ -327,11 +336,67 @@
 				}
 			}
 		},
-		"/api/users/dailynorma": {
+		"/api/users/dailynorma/{id}": {
+			"get": {
+				"tags": ["User"],
+				"summary": "Update user data",
+				"security": [{ "Bearer": [] }],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": { "type": "string" },
+						"description": "Unique users id"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Successful operation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserDailyNorma"
+								}
+							}
+						}
+					},
+
+					"401": {
+						"description": "Unauthorization",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotAuthorizationResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Id is not a valid",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotValidIdResponse"
+								}
+							}
+						}
+					}
+				}
+			},
 			"patch": {
 				"tags": ["User"],
 				"summary": "Update user data",
 				"security": [{ "Bearer": [] }],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": { "type": "string" },
+						"description": "Unique users id"
+					}
+				],
 				"requestBody": {
 					"description": "Users new daily waters norma ",
 					"required": true,
@@ -360,7 +425,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/UnauthorizationResponse"
+									"$ref": "#/components/schemas/NotAuthorizationResponse"
 								}
 							}
 						}
@@ -376,11 +441,11 @@
 						}
 					},
 					"404": {
-						"description": "User not found",
+						"description": "Id is not a valid",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/NotFoundResponse"
+									"$ref": "#/components/schemas/NotValidIdResponse"
 								}
 							}
 						}
@@ -778,6 +843,7 @@
 			},
 			"RegistrationResponse": {
 				"type": "object",
+				"required": ["_id", "email", "userName", "verificationToken", "avatarURL", "dailyNorma"],
 				"properties": {
 					"_id": {
 						"type": "string",
@@ -857,6 +923,18 @@
 						"description": "error message",
 
 						"example": "Not found"
+					}
+				}
+			},
+			"NotValidIdResponse": {
+				"type": "object",
+				"required": ["message"],
+				"properties": {
+					"message": {
+						"type": "string",
+						"description": "Id is not a valid`",
+
+						"example": "123 is not a valid id"
 					}
 				}
 			},
@@ -982,9 +1060,29 @@
 					}
 				}
 			},
+			"NotAuthorizationUpdateUserResponse": {
+				"type": "object",
+				"required": ["message"],
+				"properties": {
+					"message": {
+						"type": "string",
+						"description": "error message",
+						"enum": [
+							"Not authorized",
+							"Email or password is wrong",
+							"outdated password is wrong",
+							"outdated password is wrong",
+							"newPassword  is absent",
+							"repeatedNewPassword  is absent",
+							"new password and repeated new password must be the same"
+						],
+						"example": "Not authorized"
+					}
+				}
+			},
 			"CurrentUserResponse": {
 				"type": "object",
-				"required": ["email", "_id"],
+				"required": ["_id", "email", "userName", "dailyNorma", "avatarURL", "gender"],
 				"properties": {
 					"_id": {
 						"type": "string",
@@ -1023,48 +1121,90 @@
 			},
 			"UserUpdateRequest": {
 				"type": "object",
-				"required": ["_id"],
+				"required": [
+					"email",
+					"userName",
+					"avatarURL",
+					"gender",
+					"outdatedPassword",
+					"newPassword",
+					"repeatedNewPassword"
+				],
 				"properties": {
 					"email": {
 						"type": "string",
 						"description": "User's email",
 						"format": "email"
 					},
-					"_id": {
+
+					"userName": {
 						"type": "string",
-						"description": "User's id",
-						"example": "65b27e60a97a5a32beabeff3"
+						"description": "User's name",
+						"example": "Edik Huloian"
 					},
+
+					"avatarURL": {
+						"type": "string",
+						"description": "User's avatarURL",
+						"example": "http://www.gravatar.com/avatar/cff3cdb87812ab5158bcfa406ab3f58d?s=100"
+					},
+
 					"gender": {
 						"description": "User's gender",
 						"example": "woman",
 						"enum": ["woman", "man"]
 					},
-					"name": {
-						"type": "string",
-						"description": "User's name",
-						"example": "Edik Huloian"
-					},
 					"outdatedPassword": {
+						"description": "User's outdated password",
+						"minLength": 8,
+						"maxLength": 64,
 						"type": "string",
-						"description": "User's outdated password  must have minimum 8 and max 64 symbols",
 						"example": "qwerty123"
 					},
 					"newPassword": {
+						"description": "User's new password",
+						"minLength": 8,
+						"maxLength": 64,
 						"type": "string",
-						"description": "User's new password  must have minimum 8 and max 64 symbols",
+						"example": "qwerty123"
+					},
+					"repeatedNewPassword": {
+						"description": "Repeated user's new password",
+						"minLength": 8,
+						"maxLength": 64,
+						"type": "string",
 						"example": "qwerty123"
 					}
 				}
 			},
 			"UserDailyNorma": {
 				"type": "object",
-				"required": ["dailyNorma"],
+				"required": ["dailyNorma", "weight", "activityTime", "willDrink"],
 				"properties": {
 					"dailyNorma": {
 						"type": "number",
 						"description": "User's daily  waters norma",
-						"example": 1500
+						"example": 2
+					},
+					"gender": {
+						"description": "User's gender",
+						"example": "woman",
+						"enum": ["woman", "man"]
+					},
+					"weight": {
+						"description": "User's weight",
+						"example": 60,
+						"type": "number"
+					},
+					"activityTime": {
+						"description": "User's activity time",
+						"example": 3,
+						"type": "number"
+					},
+					"willDrink": {
+						"description": "User's will drink",
+						"example": 2,
+						"type": "number"
 					}
 				}
 			},
