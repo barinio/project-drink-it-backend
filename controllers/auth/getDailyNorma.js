@@ -6,6 +6,7 @@ const getDailyNorma = async (req, res) => {
   try {
     // Retrieve user's information including dailyNorma from the database
     const { _id } = req.user;
+    console.log(_id);
     const user = await User.findById(_id);
 
     if (!user) {
