@@ -111,11 +111,11 @@
 						}
 					},
 					"401": {
-						"description": "Unauthorization",
+						"description": "User not authorized",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/UnauthorizationResponse"
+									"$ref": "#/components/schemas/NotAuthorizationResponse"
 								}
 							}
 						}
