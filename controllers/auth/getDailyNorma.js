@@ -5,7 +5,7 @@ const getDailyNorma = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const user = await User.findById(id);
+    const user = await User.findById({ _id: id });
 
     if (!user) {
       throw HttpError(404, 'User not found');
