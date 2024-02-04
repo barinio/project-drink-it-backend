@@ -3,8 +3,7 @@ const { HttpError } = require('../../helpers');
 
 const getDailyNorma = async (req, res) => {
   try {
-    // Retrieve user's information including dailyNorma from the database
-    const { id } = req.params; // Change to req.params to get the user ID from the route params
+    const { id } = req.params;
 
     const user = await User.findById(id);
 
@@ -12,13 +11,12 @@ const getDailyNorma = async (req, res) => {
       throw HttpError(404, 'User not found');
     }
 
-    // Destructure user object with default values
     const {
       dailyNorma = 0,
       weight = 0,
       gender = '',
       activityTime = 0,
-      willDrink = false, // Assuming willDrink is a boolean property
+      willDrink = 0,
     } = user;
 
     // Return the extracted properties in the response

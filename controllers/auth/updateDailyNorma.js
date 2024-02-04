@@ -14,11 +14,10 @@
 
 const { User } = require('../../models');
 const { HttpError } = require('../../helpers');
-// const { schemas } = require('../models/userModel');
+
 
 const updateDailyNorma = async (req, res) => {
 	try {
-	  // Update daily norma and other user information in the database
 	  const { _id } = req.user;
 	  const {
 		newDailyNorma,
@@ -43,7 +42,7 @@ const updateDailyNorma = async (req, res) => {
 	  );
   
 	  if (!updatedUser) {
-		throw HttpError(404, 'User not found');
+		throw HttpError(404, 'Not found');
 	  }
   
 	  res.status(200).json({
