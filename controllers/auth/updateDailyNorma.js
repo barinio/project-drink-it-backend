@@ -46,4 +46,5 @@ const updateDailyNorma = async (req, res) => {
 	}
 };
 
+
 module.exports = updateDailyNorma;
