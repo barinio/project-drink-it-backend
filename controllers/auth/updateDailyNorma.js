@@ -19,35 +19,39 @@ const { updateDailyNorma } = require('../services/api');
 
 const updateDailyNorma = async (req, res) => {
 	try {
-	  const { _id: userId } = req.user;
-	  const { newDailyNorma, weight, gender, activityTime, willDrink } = req.body;
-
+	  const { _id } = req.user;
+	  const {
+		newDailyNorma,
+		newWeight,
+		newGender,
+		newActivityTime,
+		newWillDrink,
+	  } = req.body;
+  
 	  const updatedUser = await User.findByIdAndUpdate(
-		userId,
+		_id,
 		{
 		  $set: {
 			dailyNorma: newDailyNorma,
-			weight: weight,
-			gender: gender,
-			activityTime: activityTime,
-			willDrink: willDrink,
+			weight: newWeight,
+			gender: newGender,
+			activityTime: newActivityTime,
+			willDrink: newWillDrink,
 		  },
 		},
 		{ new: true }
 	  );
   
 	  if (!updatedUser) {
-		throw HttpError(404, 'User not found');
+		throw HttpError(404, 'Not found');
 	  }
-
+  
 	  res.status(200).json({
-		updatedUser: {
-		  dailyNorma: updatedUser.dailyNorma || 0,
-		  weight: updatedUser.weight || 0,
-		  gender: updatedUser.gender || '',
-		  activityTime: updatedUser.activityTime || 0,
-		  willDrink: updatedUser.willDrink || 0,
-		},
+		updatedDailyNorma: updatedUser.dailyNorma || 0,
+		updatedWeight: updatedUser.weight || 0,
+		updatedGender: updatedUser.gender || '',
+		updatedActivityTime: updatedUser.activityTime || 0,
+		updatedWillDrink: updatedUser.willDrink || 0,
 	  });
 	} catch (error) {
 	  res.status(error.status || 500).json({
@@ -55,6 +59,5 @@ const updateDailyNorma = async (req, res) => {
 	  });
 	}
   };
-  
 
 module.exports = updateDailyNorma;
