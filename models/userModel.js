@@ -58,7 +58,7 @@ const userSchema = new Schema(
 		},
 		dailyNorma: {
 			type: Number,
-			default: 0,
+			default: 2000,
 		},
 
 		outdatedPassword: {
