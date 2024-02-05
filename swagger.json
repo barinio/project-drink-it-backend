@@ -12,7 +12,7 @@
 	},
 	"consumes": ["application/json"],
 	"produces": ["application/json"],
-	"servers": [{ "url": "http://localhost:3000" }],
+	"servers": [{ "url": "https://project-drink-it-backend.onrender.com" }],
 
 	"tags": [
 		{
@@ -577,7 +577,7 @@
 		},
 		"/api/users/watermodel": {
 			"patch": {
-				"tags": ["User"],
+				"tags": ["Water"],
 				"summary": "Update user data",
 				"security": [{ "Bearer": [] }],
 				"requestBody": {
@@ -638,7 +638,7 @@
 		},
 		"/api/users/waterrate": {
 			"patch": {
-				"tags": ["User"],
+				"tags": ["Water"],
 				"summary": "Get user's water rate",
 				"security": [{ "Bearer": [] }],
 				"requestBody": {
@@ -699,7 +699,7 @@
 		},
 		"/api/users/water": {
 			"patch": {
-				"tags": ["User"],
+				"tags": ["Water"],
 				"summary": "Get user's total water intake",
 				"security": [{ "Bearer": [] }],
 				"requestBody": {
@@ -760,7 +760,7 @@
 		},
 		"/api/users/water/add": {
 			"patch": {
-				"tags": ["User"],
+				"tags": ["Water"],
 				"summary": "Add water intake for a user",
 				"security": [{ "Bearer": [] }],
 				"requestBody": {
@@ -819,13 +819,13 @@
 				}
 			}
 		},
-		"/api/users/water/delete": {
+		"/api/users/water/delete/{id}": {
 			"patch": {
-				"tags": ["User"],
-				"summary": "Delete water entry by user",
+				"tags": ["Water"],
+				"summary": "Delete water entry by ID",
 				"security": [{ "Bearer": [] }],
 				"requestBody": {
-					"description": "User of the water entry to be deleted",
+					"description": "ID of the water entry to be deleted",
 					"required": true,
 					"content": {
 						"application/json": {
