@@ -19,6 +19,7 @@ const listWaterToday = async (req, res) => {
 	}
 
 	const water = await Water.findOneAndUpdate(filter, { dailyNorma: dailyNorma }, { new: true });
+
 	if (water === null) {
 		const newDay = await Water.create({
 			owner,
