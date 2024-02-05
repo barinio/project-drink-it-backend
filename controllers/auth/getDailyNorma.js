@@ -5,19 +5,14 @@ const getDailyNorma = async (req, res) => {
   try {
     const { id } = req.user;
 
-    const user = await User.findById(id);
+
+    const user = await User.findById({ _id: id });
 
     if (!user) {
       throw HttpError(404, 'User not found');
     }
 
-    const {
-      dailyNorma = 0,
-      weight = 0,
-      gender = '',
-      activityTime = 0,
-      willDrink = 0,
-    } = user;
+    const { dailyNorma = 2000, weight = 0, gender = '', activityTime = 0, willDrink = 0 } = user;
 
     // Return the extracted properties in the response
     res.status(200).json({

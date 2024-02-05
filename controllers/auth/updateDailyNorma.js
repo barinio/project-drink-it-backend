@@ -1,39 +1,22 @@
 // const { User } = require('../../models');
-// const { HttpError } = require('../../helpers');
-
-// const updateDailyNorma = async (req, res) => {
-// 	const { id } = req.params;
-// 	const updatedDailyNorma = await User.findByIdAndUpdate(id, req.body, { new: true });
-// 	if (!updatedDailyNorma) {
-// 		throw HttpError(404, 'Not found');
-// 	}
-// 	res.json(updatedDailyNorma);
-// };
-
-// module.exports = updateDailyNorma;
-
-const { User } = require('../../models');
 const { HttpError } = require('../../helpers');
 
+
+const { User } = require('../../models');
 
 const updateDailyNorma = async (req, res) => {
 	try {
 		const { _id } = req.user;
-		// const {
-		// 	dailyNorma,
-		// 	weight,
-		// 	gender,
-		// 	activityTime,
-		// 	willDrink,
-		// } = req.body;
-		// console.log(_id);
+
 		const updatedUser = await User.findByIdAndUpdate(
 			_id,
 			{
 				...req.body,
+
 			},
 			{ new: true }
 		);
+
 
 		if (!updatedUser) {
 			throw HttpError(404, 'Not found');
@@ -52,5 +35,6 @@ const updateDailyNorma = async (req, res) => {
 		});
 	}
 };
+
 
 module.exports = updateDailyNorma;

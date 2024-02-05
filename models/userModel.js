@@ -108,6 +108,7 @@ const updateDailyNormaSchema = Joi.object({
 	weight: Joi.number(),
 	activityTime: Joi.number(),
 	willDrink: Joi.number(),
+
 });
 
 const schemas = {
