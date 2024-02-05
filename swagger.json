@@ -340,20 +340,12 @@
 				}
 			}
 		},
-		"/api/users/dailynorma/{_id}": {
+		"/api/users/dailynorma/": {
 			"get": {
 				"tags": ["User"],
 				"summary": "Get user daily norma data",
 				"security": [{ "Bearer": [] }],
-				"parameters": [
-					{
-						"name": "_id",
-						"in": "path",
-						"required": true,
-						"schema": { "type": "string" },
-						"description": "Unique users id"
-					}
-				],
+
 				"responses": {
 					"200": {
 						"description": "Successful operation",
@@ -392,15 +384,7 @@
 				"tags": ["User"],
 				"summary": "Update user daily norma data",
 				"security": [{ "Bearer": [] }],
-				"parameters": [
-					{
-						"name": "_id",
-						"in": "path",
-						"required": true,
-						"schema": { "type": "string" },
-						"description": "Unique users id"
-					}
-				],
+
 				"requestBody": {
 					"description": "Users new daily waters norma ",
 					"required": true,
