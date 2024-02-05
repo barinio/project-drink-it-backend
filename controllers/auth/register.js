@@ -22,7 +22,7 @@ const register = async (req, res) => {
 	const avatarURL = gravatar.url(email, { protocol: 'http', s: '100' });
 	const verificationToken = randomUUID();
 	const userName = email.split('@')[0];
-	const dailyNorma = 2;
+	const dailyNorma = 2000;
 
 	const newUser = await User.create({
 		...req.body,
