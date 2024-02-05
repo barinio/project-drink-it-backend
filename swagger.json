@@ -12,7 +12,7 @@
 	},
 	"consumes": ["application/json"],
 	"produces": ["application/json"],
-	"servers": [{ "url": "http://localhost:3000" }],
+	"servers": [{ "url": "https://project-drink-it-backend.onrender.com" }],
 
 	"tags": [
 		{
@@ -576,6 +576,7 @@
 			}
 		},
 
+
 		"/api/user/water": {
 			"post": {
 				"tags": ["Water"],
@@ -637,6 +638,7 @@
 				}
 			}
 		},
+
 
 		"/api/user/water/{_id}": {
 			"delete": {
@@ -722,6 +724,7 @@
 						"required": true,
 						"schema": { "type": "string" },
 						"description": "Unique water list item id"
+
 					}
 				],
 
