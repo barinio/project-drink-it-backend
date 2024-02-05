@@ -7,11 +7,15 @@ const { User } = require('../../models');
 const updateDailyNorma = async (req, res) => {
 	try {
 		const { _id } = req.user;
+		const { willDrink, dailyNorma, ...body } = req.body;
+		const sendNorma = !willDrink ? dailyNorma : willDrink;
 
 		const updatedUser = await User.findByIdAndUpdate(
 			_id,
 			{
-				...req.body,
+				...body,
+				willDrink: willDrink,
+				dailyNorma: sendNorma,
 
 			},
 			{ new: true }
