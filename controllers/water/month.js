@@ -9,6 +9,7 @@ const listWaterMonth = async (req, res) => {
 	const d = new Date(date);
 
 
+
 	const month = d.getMonth(date);
 	const year = d.getFullYear(date);
 
@@ -26,9 +27,15 @@ const listWaterMonth = async (req, res) => {
 	dateAt.toISOString();
 
 
+	const last = lastDay(month, year);
+
+
+
 	const dateTo = new Date(`${year}-0${month + 1}-${lastDay(month, year)}`)
-	dateTo.toISOString();
-	console.log(dateTo);
+	dateTo.toDateString()
+
+
+
 
 	if (!date) {
 		throw HttpError(400, 'Bad Request');
@@ -82,7 +89,43 @@ const listWaterMonth = async (req, res) => {
 		])
 
 
-	res.json(monthlyResults);
+	const ARR = monthlyResults;
+	const newARR = [];
+
+	for (let i = 1; i <= last; i = i + 1) {
+		if (i < 10) {
+			const d = new Date(`${year}-0${month + 1}-0${i}`);
+			console.log(d);
+			const found = await ARR.find((element) => Date.parse(element._id) === Date.parse(d));
+			if (!found) {
+				newARR.push({
+					_id: d,
+					drankWater: 0,
+					perDay: 0,
+					dailyNorma: 2000,
+					persent: 0,
+				})
+			} else
+				newARR.push(found);
+		} else {
+			const d = new Date(`${year}-0${month + 1}-${i}`);
+			console.log(d);
+			const found = await ARR.find((element) => Date.parse(element._id) === Date.parse(d));
+			if (!found) {
+				newARR.push({
+					_id: d,
+					drankWater: 0,
+					perDay: 0,
+					dailyNorma: 2000,
+					persent: 0,
+				})
+			} else
+				newARR.push(found);
+
+		}
+
+	}
+	res.json(newARR);
 };
 
 module.exports = listWaterMonth;

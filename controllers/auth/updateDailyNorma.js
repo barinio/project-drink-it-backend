@@ -13,33 +13,38 @@
 // module.exports = updateDailyNorma;
 
 const { User } = require('../../models');
-const { HttpError } = require('../../helpers');
-// const { schemas } = require('../models/userModel');
 
 const updateDailyNorma = async (req, res) => {
 	try {
-		const { error } = schemas.updateDailyNormaSchema.validate(req.body);
-		if (error) {
-			return res.status(400).json({ error: error.details[0].message });
-		}
+		const { _id } = req.user;
+		const { newDailyNorma, newWeight, newGender, newActivityTime, newWillDrink } = req.body;
 
-		const updatedUserData = {
-			dailyNorma: req.body.dailyNorma,
-			weight: req.body.weight,
-			gender: req.body.gender,
-			activityTime: req.body.activityTime,
-			willDrink: req.body.willDrink,
-		};
+		await User.findByIdAndUpdate(
+			_id,
+			{
+				dailyNorma: newDailyNorma,
+				weight: newWeight,
+				gender: newGender,
+				activityTime: newActivityTime,
+				willDrink: newWillDrink,
+			},
+			{ new: true }
+		);
 
-		const user = await User.findByIdAndUpdate(req.user.id, updatedUserData, { new: true });
-		if (!user) {
-			return res.status(404).json({ error: 'User not found' });
-		}
-
-		return res.status(200).json(updatedUserData);
+		res.status(200).json({
+			_id: _id,
+			dailyNorma: newDailyNorma,
+			weight: newWeight,
+			gender: newGender,
+			activityTime: newActivityTime,
+			willDrink: newWillDrink,
+		});
 	} catch (error) {
-		throw HttpError(404, 'Not found');
+		res.status(error.status || 500).json({
+			error: error.message || 'Internal Server Error',
+		});
 	}
 };
 
-module.exports = { updateDailyNorma };
+
+module.exports = updateDailyNorma;

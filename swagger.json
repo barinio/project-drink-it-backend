@@ -22,6 +22,10 @@
 		{
 			"name": "User",
 			"description": "Users endpoints"
+		},
+		{
+			"name": "Water",
+			"description": "Water endpoints"
 		}
 	],
 	"paths": {
@@ -276,7 +280,7 @@
 				}
 			}
 		},
-		"/api/users/info/{id}": {
+		"/api/users/info/{_id}": {
 			"patch": {
 				"tags": ["User"],
 				"summary": "Update user data",
@@ -336,14 +340,14 @@
 				}
 			}
 		},
-		"/api/users/dailynorma/{id}": {
+		"/api/users/dailynorma/{_id}": {
 			"get": {
 				"tags": ["User"],
-				"summary": "Update user data",
+				"summary": "Get user daily norma data",
 				"security": [{ "Bearer": [] }],
 				"parameters": [
 					{
-						"name": "id",
+						"name": "_id",
 						"in": "path",
 						"required": true,
 						"schema": { "type": "string" },
@@ -386,11 +390,11 @@
 			},
 			"patch": {
 				"tags": ["User"],
-				"summary": "Update user data",
+				"summary": "Update user daily norma data",
 				"security": [{ "Bearer": [] }],
 				"parameters": [
 					{
-						"name": "id",
+						"name": "_id",
 						"in": "path",
 						"required": true,
 						"schema": { "type": "string" },
@@ -453,22 +457,20 @@
 				}
 			}
 		},
-		"/api/users/today": {
-			"patch": {
-				"tags": ["User"],
-				"summary": "Update user data",
+		"/api/user/water/today": {
+			"get": {
+				"tags": ["Water"],
+				"summary": "Get today water data",
 				"security": [{ "Bearer": [] }],
-				"requestBody": {
-					"description": "Get user's water intake for today",
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/UserToday"
-							}
-						}
+				"parameters": [
+					{
+						"name": "date",
+						"in": "query",
+						"required": true,
+						"schema": { "type": "string" },
+						"description": "Date water data"
 					}
-				},
+				],
 				"responses": {
 					"200": {
 						"description": "Successful operation",
@@ -514,22 +516,20 @@
 				}
 			}
 		},
-		"/api/users/month": {
-			"patch": {
-				"tags": ["User"],
-				"summary": "Update user data",
+		"/api/user/water/month": {
+			"get": {
+				"tags": ["Water"],
+				"summary": "Get month water data",
 				"security": [{ "Bearer": [] }],
-				"requestBody": {
-					"description": "Get user's water intake for the month",
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/UserMonth"
-							}
-						}
+				"parameters": [
+					{
+						"name": "date",
+						"in": "query",
+						"required": true,
+						"schema": { "type": "string" },
+						"description": "Date water data"
 					}
-				},
+				],
 				"responses": {
 					"200": {
 						"description": "Successful operation",
@@ -575,132 +575,12 @@
 				}
 			}
 		},
-		"/api/users/watermodel": {
-			"patch": {
-				"tags": ["Water"],
-				"summary": "Update user data",
-				"security": [{ "Bearer": [] }],
-				"requestBody": {
-					"description": "Users water model",
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/UserWaterModel"
-							}
-						}
-					}
-				},
-				"responses": {
-					"200": {
-						"description": "Successful operation",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/UserWaterModel"
-								}
-							}
-						}
-					},
 
-					"401": {
-						"description": "Unauthorization",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/UnauthorizationResponse"
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Bad request (invalid request body)",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/BadRequestBodyResponse"
-								}
-							}
-						}
-					},
-					"404": {
-						"description": "User not found",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/NotFoundResponse"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/users/waterrate": {
-			"patch": {
-				"tags": ["Water"],
-				"summary": "Get user's water rate",
-				"security": [{ "Bearer": [] }],
-				"requestBody": {
-					"description": "Users waterrate",
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/UserWaterRate"
-							}
-						}
-					}
-				},
-				"responses": {
-					"200": {
-						"description": "Successful operation",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/UserWaterRate"
-								}
-							}
-						}
-					},
 
-					"401": {
-						"description": "Unauthorization",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/UnauthorizationResponse"
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Bad request (invalid request body)",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/BadRequestBodyResponse"
-								}
-							}
-						}
-					},
-					"404": {
-						"description": "User not found",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/NotFoundResponse"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/users/water": {
-			"patch": {
+		"/api/user/water": {
+			"post": {
 				"tags": ["Water"],
-				"summary": "Get user's total water intake",
+				"summary": "Add water entry by user",
 				"security": [{ "Bearer": [] }],
 				"requestBody": {
 					"description": "Successful operation",
@@ -719,7 +599,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/UserWater"
+									"$ref": "#/components/schemas/UserWaterResponse"
 								}
 							}
 						}
@@ -758,29 +638,37 @@
 				}
 			}
 		},
-		"/api/users/water/add": {
-			"patch": {
+
+
+		"/api/user/water/{_id}": {
+			"delete": {
 				"tags": ["Water"],
-				"summary": "Add water intake for a user",
+				"summary": "Delete water entry by user",
 				"security": [{ "Bearer": [] }],
-				"requestBody": {
-					"description": "Request to add water intake",
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/UserWaterAdd"
-							}
-						}
+				"parameters": [
+					{
+						"name": "_id",
+						"in": "path",
+						"required": true,
+						"schema": { "type": "string" },
+						"description": "Unique day id"
+					},
+					{
+						"name": "id",
+						"in": "query",
+						"required": true,
+						"schema": { "type": "string" },
+						"description": "Unique water list item id"
 					}
-				},
+				],
+
 				"responses": {
 					"200": {
 						"description": "Successful operation",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/UserWater"
+									"$ref": "#/components/schemas/UserWaterDelete"
 								}
 							}
 						}
@@ -817,31 +705,36 @@
 						}
 					}
 				}
-			}
-		},
-		"/api/users/water/delete/{id}": {
-			"patch": {
+			},
+			"put": {
 				"tags": ["Water"],
-				"summary": "Delete water entry by ID",
+				"summary": "Edit water intake for a user",
 				"security": [{ "Bearer": [] }],
-				"requestBody": {
-					"description": "ID of the water entry to be deleted",
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/UserWaterDelete"
-							}
-						}
+				"parameters": [
+					{
+						"name": "_id",
+						"in": "path",
+						"required": true,
+						"schema": { "type": "string" },
+						"description": "Unique day id"
+					},
+					{
+						"name": "id",
+						"in": "query",
+						"required": true,
+						"schema": { "type": "string" },
+						"description": "Unique water list item id"
+
 					}
-				},
+				],
+
 				"responses": {
 					"200": {
 						"description": "Successful operation",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/UserWater"
+									"$ref": "#/components/schemas/UserWaterAdd"
 								}
 							}
 						}
@@ -1344,9 +1237,57 @@
 				"type": "object",
 				"required": ["waterToday"],
 				"properties": {
-					"waterModel": {
+					"_id": {
 						"type": "string",
-						"description": "Users water today"
+						"example": "65bec7f56a562baad96006c0"
+					},
+					"dailyNorma": {
+						"type": "number",
+						"example": 2000
+					},
+					"date": {
+						"type": "string",
+						"example": "2024-02-04T00:00:00.000Z"
+					},
+					"perDay": {
+						"type": "number",
+						"example": 3
+					},
+					"drankWater": {
+						"type": "number",
+						"example": 850
+					},
+					"waterlist": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"waterVolume": {
+									"type": "number",
+									"example": 200
+								},
+								"time": {
+									"type": "string",
+									"example": "2024-02-04T10:40"
+								},
+								"id": {
+									"type": "string",
+									"example": "f400cb7e-a4fa-4b1b-a21e-1089827edc5e"
+								}
+							}
+						}
+					},
+					"owner": {
+						"type": "string",
+						"example": "65b95ac9d27e6be9198445e4"
+					},
+					"createdAt": {
+						"type": "string",
+						"example": "2024-02-03T23:10:45.345Z"
+					},
+					"updatedAt": {
+						"type": "string",
+						"example": "2024-02-04T20:29:14.160Z"
 					}
 				}
 			},
@@ -1354,9 +1295,25 @@
 				"type": "object",
 				"required": ["waterMonth"],
 				"properties": {
-					"waterModel": {
+					"_id": {
 						"type": "string",
-						"description": "Users water Monthly"
+						"example": "2024-02-01T00:00:00.000Z"
+					},
+					"drankWater": {
+						"type": "number",
+						"example": 350
+					},
+					"perDay": {
+						"type": "number",
+						"example": 2
+					},
+					"dailyNorma": {
+						"type": "number",
+						"example": 2000
+					},
+					"persent": {
+						"type": "number",
+						"example": 17.5
 					}
 				}
 			},
@@ -1374,19 +1331,54 @@
 				"type": "object",
 				"required": ["UserWater"],
 				"properties": {
-					"waterModel": {
+					"waterVolume": {
+						"type": "number",
+						"example": 400
+					},
+					"time": {
 						"type": "string",
-						"description": "Users water "
+						"example": "2024-02-01T18:00"
+					}
+				}
+			},
+			"UserWaterResponse": {
+				"type": "object",
+				"required": ["UserWater"],
+				"properties": {
+					"waterVolume": {
+						"type": "number",
+						"example": 400
+					},
+					"time": {
+						"type": "string",
+						"example": "2024-02-01T18:00"
+					},
+					"id": {
+						"type": "string",
+						"example": "3536919d-c109-4921-8068-7a663c71ea79"
 					}
 				}
 			},
 			"UserWaterAdd": {
 				"type": "object",
-				"required": ["waterModel"],
+				"required": ["waterVolume", "time"],
 				"properties": {
-					"waterModel": {
+					"waterVolume": {
+						"type": "number",
+						"example": 400,
+						"description": "Amount of user's water intake"
+					},
+					"time": {
 						"type": "string",
-						"description": "Description of user's water intake"
+						"example": "2024-02-01T18:00",
+						"description": "Time of user's water intake"
+					},
+
+					"id": {
+						"type": "string",
+
+						"example": "3536919d-c109-4921-8068-7a663c71ea79",
+						"description": "Water list item id"
 					}
 				}
 			},
@@ -1394,8 +1386,9 @@
 				"type": "object",
 				"required": ["id"],
 				"properties": {
-					"waterModel": {
+					"id": {
 						"type": "string",
+						"example": "3536919d-c109-4921-8068-7a663c71ea79",
 						"description": "ID of the water entry to be deleted"
 					}
 				}
