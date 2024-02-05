@@ -7,6 +7,7 @@ const login = require('./auth/login');
 const logout = require('./auth/logout');
 const current = require('./auth/current');
 const updateUser = require('./auth/updateUser');
+const deleteUser = require('./auth/deleteUser');
 
 // !!!
 const getDailyNorma = require('./auth/getDailyNorma');
@@ -27,6 +28,7 @@ module.exports = {
 	logout: ctrlWrapper(logout),
 	current: ctrlWrapper(current),
 	updateUser: ctrlWrapper(updateUser),
+	deleteUser: ctrlWrapper(deleteUser),
 
 	// !!!
 	getDailyNorma: ctrlWrapper(getDailyNorma),
