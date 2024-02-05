@@ -1,4 +1,3 @@
-const gravatar = require('gravatar');
 const bcrypt = require('bcrypt');
 const { randomUUID } = require('crypto');
 const jwt = require('jsonwebtoken');
@@ -19,7 +18,7 @@ const register = async (req, res) => {
 	}
 
 	const hashPassword = await bcrypt.hash(password, 10);
-	const avatarURL = gravatar.url(email, { protocol: 'http', s: '100' });
+
 	const verificationToken = randomUUID();
 	const userName = email.split('@')[0];
 	const dailyNorma = 2;
@@ -27,7 +26,7 @@ const register = async (req, res) => {
 	const newUser = await User.create({
 		...req.body,
 		password: hashPassword,
-		avatarURL,
+
 		verificationToken,
 		userName,
 		dailyNorma,
