@@ -58,7 +58,7 @@ const userSchema = new Schema(
 		},
 		dailyNorma: {
 			type: Number,
-			default: 0,
+			default: 2000,
 		},
 
 		outdatedPassword: {
@@ -103,11 +103,11 @@ const updateUserSchema = Joi.object({
 
 // !!!
 const updateDailyNormaSchema = Joi.object({
-	dailyNorma: Joi.number().required(),
+	dailyNorma: Joi.number().max(15000),
 	gender: Joi.string().valid(...genderList),
-	weight: Joi.number().required(),
-	activityTime: Joi.number().required(),
-	willDrink: Joi.number().required(),
+	weight: Joi.number(),
+	activityTime: Joi.number(),
+	willDrink: Joi.number(),
 });
 
 const schemas = {
