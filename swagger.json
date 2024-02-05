@@ -576,7 +576,6 @@
 			}
 		},
 
-
 		"/api/user/water": {
 			"post": {
 				"tags": ["Water"],
@@ -638,7 +637,6 @@
 				}
 			}
 		},
-
 
 		"/api/user/water/{_id}": {
 			"delete": {
@@ -724,7 +722,6 @@
 						"required": true,
 						"schema": { "type": "string" },
 						"description": "Unique water list item id"
-
 					}
 				],
 
