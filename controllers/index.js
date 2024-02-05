@@ -7,9 +7,10 @@ const login = require('./auth/login');
 const logout = require('./auth/logout');
 const current = require('./auth/current');
 const updateUser = require('./auth/updateUser');
+const cloudinaryController = require('./auth/cloudinary');
 
 // !!!
-const getDailyNorma = require('./auth/getDailyNorma');
+// const getDailyNorma = require('./auth/getDailyNorma');
 const updateDailyNorma = require('./auth/updateDailyNorma');
 const updateAvatar = require('./auth/updateAvatar');
 
@@ -27,9 +28,10 @@ module.exports = {
 	logout: ctrlWrapper(logout),
 	current: ctrlWrapper(current),
 	updateUser: ctrlWrapper(updateUser),
+	cloudinaryController: ctrlWrapper(cloudinaryController),
 
 	// !!!
-	getDailyNorma: ctrlWrapper(getDailyNorma),
+	// getDailyNorma: ctrlWrapper(getDailyNorma),
 	updateDailyNorma: ctrlWrapper(updateDailyNorma),
 	updateAvatar: ctrlWrapper(updateAvatar),
 
