@@ -3,7 +3,7 @@ const { HttpError } = require('../../helpers');
 
 const getDailyNorma = async (req, res) => {
   try {
-    const { id } = req.user;
+    const { id, dailyNorma, weight, gender, activityTime, willDrink } = req.user;
 
 
     const user = await User.findById({ _id: id });
@@ -12,9 +12,7 @@ const getDailyNorma = async (req, res) => {
       throw HttpError(404, 'User not found');
     }
 
-    const { dailyNorma = 2000, weight = 0, gender = '', activityTime = 0, willDrink = 0 } = user;
 
-    // Return the extracted properties in the response
     res.status(200).json({
       dailyNorma,
       weight,
