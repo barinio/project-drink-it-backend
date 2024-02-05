@@ -103,11 +103,12 @@ const updateUserSchema = Joi.object({
 
 // !!!
 const updateDailyNormaSchema = Joi.object({
-	newDailyNorma: Joi.number().required(),
-	newGender: Joi.string().valid(...genderList),
-	newWeight: Joi.number().required(),
-	newActivityTime: Joi.number().required(),
-	newWillDrink: Joi.number().required(),
+	dailyNorma: Joi.number().max(15000),
+	gender: Joi.string().valid(...genderList),
+	weight: Joi.number(),
+	activityTime: Joi.number(),
+	willDrink: Joi.number(),
+
 });
 
 const schemas = {

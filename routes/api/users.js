@@ -26,6 +26,10 @@ router.patch('/info/:id', authenticate, isValidId, validBody(schemas.updateUserS
 
 router.delete('/:id', authenticate, isValidId, ctrl.deleteUser);
 
+router.get('/dailynorma', authenticate, ctrl.getDailyNorma);
+
+router.patch('/dailynorma', authenticate, validBody(schemas.updateDailyNormaSchema), ctrl.updateDailyNorma);
+
 router.get('/dailynorma/:id', authenticate, isValidId, ctrl.getDailyNorma);
 
 router.patch(
