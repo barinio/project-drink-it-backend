@@ -1,12 +1,7 @@
 const { User } = require('../../models');
 const { HttpError } = require('../../helpers');
 
-const { User } = require('../../models');
-const { HttpError } = require('../../helpers');
-const { fetchDailyNorma} = require('../services/api');
-
 const getDailyNorma = async (req, res) => {
-
 	try {
 		const { id } = req.params;
 
@@ -15,7 +10,6 @@ const getDailyNorma = async (req, res) => {
 		if (!user) {
 			throw HttpError(404, 'User not found');
 		}
-
 
 		const { dailyNorma = 2000, weight = 0, gender = '', activityTime = 0, willDrink = 0 } = user;
 
