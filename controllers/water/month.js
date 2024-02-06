@@ -12,7 +12,7 @@ const listWaterMonth = async (req, res) => {
 
 	const updtodaynorma = updtoday.toISOString();
 	const filter = { owner, date: updtodaynorma };
-	console.log(filter);
+
 	await Water.findOneAndUpdate(filter, { dailyNorma: dailyNorma }, { new: true });
 
 
