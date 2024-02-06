@@ -7,7 +7,6 @@ const updateAvatar = async (req, res) => {
 	const user = await User.findByIdAndUpdate(_id, { avatarURL });
 
 	user.avatarURL = avatarURL;
-	user.save();
 
 	res.json({ avatarURL: user.avatarURL });
 };
