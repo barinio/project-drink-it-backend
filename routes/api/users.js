@@ -22,13 +22,18 @@ router.get('/current', authenticate, ctrl.current);
 
 router.patch('/avatar', authenticate, upload.single('avatar'), ctrl.updateAvatar);
 
-router.patch('/info/:id', authenticate, isValidId, validBody(schemas.updateUserSchema), ctrl.updateUser);
+router.patch('/info', authenticate, validBody(schemas.updateUserSchema), ctrl.updateUser);
 
-router.delete('/:id', authenticate, isValidId, ctrl.deleteUser);
+router.delete('/delete', authenticate, ctrl.deleteUser);
 
 router.get('/dailynorma', authenticate, ctrl.getDailyNorma);
 
-router.patch('/dailynorma', authenticate, validBody(schemas.updateDailyNormaSchema), ctrl.updateDailyNorma);
+router.patch(
+	'/dailynorma',
+	authenticate,
+	validBody(schemas.updateDailyNormaSchema),
+	ctrl.updateDailyNorma
+);
 
 router.get('/dailynorma/:id', authenticate, isValidId, ctrl.getDailyNorma);
 

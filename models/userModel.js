@@ -4,7 +4,6 @@ const Joi = require('joi');
 const { handleMongooseError } = require('../helpers');
 
 const emailReg = /^\S+@\S+\.\S+$/;
-// const dateRegexp = /^\d{2}-d{2}-\d{4}/;
 const genderList = ['woman', 'man'];
 
 const userSchema = new Schema(
@@ -17,6 +16,7 @@ const userSchema = new Schema(
 			type: String,
 			required: [true, 'Email is required'],
 			unique: true,
+			match: emailReg,
 		},
 		token: {
 			type: String,
@@ -24,7 +24,6 @@ const userSchema = new Schema(
 		},
 		avatarURL: {
 			type: String,
-			// required: true,
 		},
 		verify: {
 			type: Boolean,
@@ -42,7 +41,6 @@ const userSchema = new Schema(
 			type: String,
 			enum: genderList,
 			default: 'woman',
-			// required: true,
 		},
 		weight: {
 			type: Number,
@@ -63,15 +61,9 @@ const userSchema = new Schema(
 
 		outdatedPassword: {
 			type: String,
-			// required: [true, 'Set outdated password for user'],
 		},
 		newPassword: {
 			type: String,
-			// required: [true, 'Set new password for user'],
-		},
-		repeatedNewPassword: {
-			type: String,
-			// required: [true, 'Repeat new password for user'],
 		},
 	},
 	{ versionKey: false }
@@ -80,7 +72,12 @@ const userSchema = new Schema(
 userSchema.post('save', handleMongooseError);
 
 const registerSchema = Joi.object({
-	email: Joi.string().pattern(emailReg).required(),
+	email: Joi.string().pattern(emailReg).required().empty(false).messages({
+		'string.base': 'The email must be a string.',
+		'any.required': 'The email field is required.',
+		'string.empty': 'The email must not be empty.',
+		'string.patter.base': 'The email must be in format test@gmail.com.',
+	}),
 	password: Joi.string().min(8).max(64).required(),
 });
 const emailSchema = Joi.object({
@@ -98,7 +95,6 @@ const updateUserSchema = Joi.object({
 	email: Joi.string().pattern(emailReg),
 	outdatedPassword: Joi.string().min(8).max(64),
 	newPassword: Joi.string().min(8).max(64),
-	repeatedNewPassword: Joi.string().min(8).max(64),
 });
 
 // !!!
@@ -108,7 +104,6 @@ const updateDailyNormaSchema = Joi.object({
 	weight: Joi.number(),
 	activityTime: Joi.number(),
 	willDrink: Joi.number(),
-
 });
 
 const schemas = {
