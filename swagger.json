@@ -280,20 +280,11 @@
 				}
 			}
 		},
-		"/api/users/info/{_id}": {
+		"/api/users/info": {
 			"patch": {
 				"tags": ["User"],
 				"summary": "Update user data",
 				"security": [{ "Bearer": [] }],
-				"parameters": [
-					{
-						"name": "id",
-						"in": "path",
-						"required": true,
-						"schema": { "type": "string" },
-						"description": "Unique users id"
-					}
-				],
 				"requestBody": {
 					"description": "Users new data",
 					"required": true,
@@ -340,7 +331,7 @@
 				}
 			}
 		},
-		"/api/users/dailynorma/": {
+		"/api/users/dailynorma": {
 			"get": {
 				"tags": ["User"],
 				"summary": "Get user daily norma data",
@@ -708,7 +699,17 @@
 						"description": "Unique water list item id"
 					}
 				],
-
+				"requestBody": {
+					"description": "Edit water intake for a user",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserWaterAdd"
+							}
+						}
+					}
+				},
 				"responses": {
 					"200": {
 						"description": "Successful operation",
@@ -1228,6 +1229,7 @@
 					},
 					"date": {
 						"type": "string",
+						"format": "date-time",
 						"example": "2024-02-04T00:00:00.000Z"
 					},
 					"perDay": {
@@ -1249,6 +1251,7 @@
 								},
 								"time": {
 									"type": "string",
+									"format": "date-time",
 									"example": "2024-02-04T10:40"
 								},
 								"id": {
@@ -1264,10 +1267,12 @@
 					},
 					"createdAt": {
 						"type": "string",
+						"format": "date-time",
 						"example": "2024-02-03T23:10:45.345Z"
 					},
 					"updatedAt": {
 						"type": "string",
+						"format": "date-time",
 						"example": "2024-02-04T20:29:14.160Z"
 					}
 				}
@@ -1278,6 +1283,7 @@
 				"properties": {
 					"_id": {
 						"type": "string",
+						"format": "date-time",
 						"example": "2024-02-01T00:00:00.000Z"
 					},
 					"drankWater": {
@@ -1318,6 +1324,7 @@
 					},
 					"time": {
 						"type": "string",
+						"format": "date-time",
 						"example": "2024-02-01T18:00"
 					}
 				}
@@ -1332,6 +1339,7 @@
 					},
 					"time": {
 						"type": "string",
+						"format": "date-time",
 						"example": "2024-02-01T18:00"
 					},
 					"id": {
@@ -1351,6 +1359,7 @@
 					},
 					"time": {
 						"type": "string",
+						"format": "date-time",
 						"example": "2024-02-01T18:00",
 						"description": "Time of user's water intake"
 					},
