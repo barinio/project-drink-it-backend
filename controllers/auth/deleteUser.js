@@ -2,8 +2,8 @@ const { User } = require('../../models');
 const { HttpError } = require('../../helpers');
 
 const deleteUser = async (req, res) => {
-	const { id } = req.params;
-	const result = await User.findByIdAndDelete(id);
+	const { _id } = req.user;
+	const result = await User.findByIdAndDelete(_id);
 	if (!result) {
 		throw HttpError(404, 'Not Found');
 	}

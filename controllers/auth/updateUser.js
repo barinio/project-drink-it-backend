@@ -4,24 +4,13 @@ const bcrypt = require('bcrypt');
 
 const updateUser = async (req, res) => {
 	const { _id } = req.user;
-	const {
-		email,
-		userName,
-		dailyNorma,
-		avatarURL,
-		gender,
-		outdatedPassword,
-		newPassword,
-		repeatedNewPassword,
-	} = req.body;
+	const { email, userName, dailyNorma, avatarURL, gender, outdatedPassword, newPassword } = req.body;
 
 	const user = await User.findById(_id);
 
 	if (!user) {
 		throw HttpError(401, 'Email or password is wrong');
 	}
-
-	// console.log('user.password:', user.password);
 
 	if (outdatedPassword) {
 		const passwordCompare = await bcrypt.compare(outdatedPassword, user.password);
@@ -32,25 +21,16 @@ const updateUser = async (req, res) => {
 
 	if (!outdatedPassword && newPassword) {
 		throw HttpError(401, 'outdated password is absent');
-	} else if (!outdatedPassword && repeatedNewPassword) {
-		throw HttpError(401, 'outdated password is absent');
 	} else if (outdatedPassword && !newPassword) {
-		throw HttpError(401, 'newPassword  is absent');
-	} else if (outdatedPassword && !repeatedNewPassword) {
-		throw HttpError(401, 'repeatedNewPassword  is absent');
-	} else if (!newPassword && repeatedNewPassword) {
-		throw HttpError(401, 'newPassword  is absent');
-	} else if (newPassword && !repeatedNewPassword) {
-		throw HttpError(401, 'repeatedNewPassword is absent');
-	} else if (newPassword !== repeatedNewPassword) {
-		throw HttpError(401, 'new password and repeated new password must be the same');
-	} else if (outdatedPassword && newPassword === repeatedNewPassword) {
+		throw HttpError(401, 'new password is absent');
+	} else if (outdatedPassword && newPassword && outdatedPassword !== newPassword) {
 		const newHashPassword = await bcrypt.hash(newPassword, 10);
-		// console.log('newHashPassword:', newHashPassword);
+		console.log(newHashPassword);
+
 		user.password = newHashPassword;
-		// console.log('user.password:', user.password);
+		console.log(user.password);
 	} else {
-		console.log('something went wrong');
+		throw HttpError(401, 'outdated password and new password must be different');
 	}
 
 	await User.findByIdAndUpdate(
