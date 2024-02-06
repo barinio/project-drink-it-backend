@@ -4,7 +4,7 @@ const ctrl = require('../../controllers');
 
 const router = express.Router();
 
-const { validBody, authenticate, upload, isValidId } = require('../../middlewares');
+const { validBody, authenticate, upload } = require('../../middlewares');
 
 const { schemas } = require('../../models/userModel');
 
@@ -35,14 +35,5 @@ router.patch(
 	ctrl.updateDailyNorma
 );
 
-router.get('/dailynorma/:id', authenticate, isValidId, ctrl.getDailyNorma);
-
-router.patch(
-	'/dailynorma/:id',
-	authenticate,
-	isValidId,
-	validBody(schemas.updateDailyNormaSchema),
-	ctrl.updateDailyNorma
-);
 
 module.exports = router;
