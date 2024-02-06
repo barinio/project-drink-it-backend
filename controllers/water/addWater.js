@@ -1,18 +1,16 @@
 
 const { Water } = require('../../models');
 const { v4: uuidv4 } = require('uuid');
+const { newDate } = require('../../service/waterServices/newDate');
 
 const addWater = async (req, res) => {
 	const { _id: owner, dailyNorma } = req.user;
 	const { waterVolume, time } = req.body;
 
 	const userDailyNorma = dailyNorma > 0 ? dailyNorma : 2000;
-	const d = new Date();
 
-	d.setUTCHours(0, 0, 0, 0);
-	const date = d.toISOString();
-
-	const id = uuidv4();
+	const date = newDate();
+	const portionID = uuidv4();
 
 
 	const filter = { owner, date: date };
@@ -26,14 +24,14 @@ const addWater = async (req, res) => {
 			dailyNorma: userDailyNorma,
 			drankWater: waterVolume,
 			perDay: +1,
-			waterlist: [{ waterVolume: waterVolume, time: time, id }],
+			waterlist: [{ waterVolume: waterVolume, time: time, id: portionID }],
 		});
 
 		res.status(201).json({
 			status: "success",
 			waterVolume,
 			time,
-			id,
+			id: portionID,
 
 		});
 
@@ -42,7 +40,7 @@ const addWater = async (req, res) => {
 		await Water.findOneAndUpdate(filter,
 			{
 				$inc: { perDay: +1, drankWater: +waterVolume },
-				$push: { waterlist: { waterVolume: waterVolume, time: time, id } },
+				$push: { waterlist: { waterVolume: waterVolume, time: time, id: portionID } },
 			},
 			{ new: true })
 
@@ -50,7 +48,7 @@ const addWater = async (req, res) => {
 			status: "success",
 			waterVolume,
 			time,
-			id,
+			id: portionID,
 		});
 	}
 };

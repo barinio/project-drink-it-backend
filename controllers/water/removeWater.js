@@ -3,17 +3,17 @@ const { HttpError } = require('../../helpers');
 const { validateID } = require('../../service/waterServices/uuidValid');
 
 const removeWater = async (req, res) => {
-	const { _id } = req.query;
-	const { id } = req.params;
+	const { portionID } = req.query;
+	const { todayID } = req.params;
 
-	const validid = validateID(_id);
+	const validid = validateID(portionID);
 
 	if (!validid) {
 		throw HttpError(404, 'Not found');
 	}
 
-	const { waterlist } = await Water.findById(id);
-	const persentWateronid = waterlist.find(keys => keys.id === _id);
+	const { waterlist } = await Water.findById(todayID);
+	const persentWateronid = waterlist.find(keys => keys.id === portionID);
 
 
 	if (!persentWateronid) {
@@ -21,10 +21,10 @@ const removeWater = async (req, res) => {
 	}
 
 
-	const removeWater = await Water.findByIdAndUpdate(id,
+	const removeWater = await Water.findByIdAndUpdate(todayID,
 		{
 			$inc: { drankWater: -persentWateronid.waterVolume, perDay: -1 },
-			$pull: { waterlist: { id: _id } },
+			$pull: { waterlist: { id: portionID } },
 		},
 
 		{ new: true })

@@ -3,18 +3,18 @@ const { HttpError } = require('../../helpers');
 const { validateID } = require('../../service/waterServices/uuidValid');
 
 const editWater = async (req, res) => {
-	const { _id } = req.query;
-	const { id } = req.params;
+	const { portionID } = req.query;
+	const { todayID } = req.params;
 
-	const validid = validateID(_id);
+	const validid = validateID(portionID);
 
 	const { time, waterVolume } = req.body;
 
-	const { waterlist } = await Water.findById(id);
-	const persentWateronid = waterlist.find(keys => keys.id === _id);
+	const { waterlist } = await Water.findById(todayID);
+	const persentWateronid = waterlist.find(keys => keys.id === portionID);
 
 
-	const edit = await Water.findOneAndUpdate({ _id: id, "waterlist.id": _id },
+	const edit = await Water.findOneAndUpdate({ _id: todayID, "waterlist.id": portionID },
 		{
 			$inc: { drankWater: -persentWateronid.waterVolume + waterVolume },
 			$set: { "waterlist.$.waterVolume": waterVolume, "waterlist.$.time": time }
@@ -29,7 +29,7 @@ const editWater = async (req, res) => {
 		status: "success",
 		waterVolume,
 		time,
-		id: _id,
+		id: portionID,
 	});
 };
 
