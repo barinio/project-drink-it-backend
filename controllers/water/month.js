@@ -3,10 +3,17 @@ const { HttpError } = require('../../helpers');
 const { Water } = require('../../models');
 
 const listWaterMonth = async (req, res) => {
-	const { _id: owner } = req.user;
+	const { _id: owner, dailyNorma } = req.user;
 	const { date } = req.query;
 
 	const d = new Date(date);
+	const updtoday = new Date();
+	updtoday.setUTCHours(0, 0, 0, 0);
+
+	const updtodaynorma = updtoday.toISOString();
+	const filter = { owner, date: updtodaynorma };
+	console.log(filter);
+	await Water.findOneAndUpdate(filter, { dailyNorma: dailyNorma }, { new: true });
 
 
 
@@ -26,10 +33,7 @@ const listWaterMonth = async (req, res) => {
 	const dateAt = new Date(`${year}-0${month + 1}-01`);
 	dateAt.toISOString();
 
-
 	const last = lastDay(month, year);
-
-
 
 	const dateTo = new Date(`${year}-0${month + 1}-${lastDay(month, year)}`)
 	dateTo.toDateString()
@@ -95,28 +99,28 @@ const listWaterMonth = async (req, res) => {
 	for (let i = 1; i <= last; i = i + 1) {
 		if (i < 10) {
 			const d = new Date(`${year}-0${month + 1}-0${i}`);
-			console.log(d);
+
 			const found = await ARR.find((element) => Date.parse(element._id) === Date.parse(d));
 			if (!found) {
 				newARR.push({
 					_id: d,
 					drankWater: 0,
 					perDay: 0,
-					dailyNorma: 2000,
+					dailyNorma: dailyNorma,
 					persent: 0,
 				})
 			} else
 				newARR.push(found);
 		} else {
 			const d = new Date(`${year}-0${month + 1}-${i}`);
-			console.log(d);
+
 			const found = await ARR.find((element) => Date.parse(element._id) === Date.parse(d));
 			if (!found) {
 				newARR.push({
 					_id: d,
 					drankWater: 0,
 					perDay: 0,
-					dailyNorma: 2000,
+					dailyNorma: dailyNorma,
 					persent: 0,
 				})
 			} else
