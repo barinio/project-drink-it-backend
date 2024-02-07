@@ -23,14 +23,11 @@ const updateUser = async (req, res) => {
 		throw HttpError(401, 'outdated password is absent');
 	} else if (outdatedPassword && !newPassword) {
 		throw HttpError(401, 'new password is absent');
-	} else if (outdatedPassword && newPassword && outdatedPassword !== newPassword) {
-		const newHashPassword = await bcrypt.hash(newPassword, 10);
-		console.log(newHashPassword);
-
-		user.password = newHashPassword;
-		console.log(user.password);
-	} else {
+	} else if (outdatedPassword && newPassword && outdatedPassword === newPassword) {
 		throw HttpError(401, 'outdated password and new password must be different');
+	} else if (outdatedPassword && newPassword) {
+		const newHashPassword = await bcrypt.hash(newPassword, 10);
+		user.password = newHashPassword;
 	}
 
 	await User.findByIdAndUpdate(
