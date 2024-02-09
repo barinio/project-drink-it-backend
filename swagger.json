@@ -613,6 +613,57 @@
 			}
 		},
 
+		"/api/user/delete": {
+			"delete": {
+				"tags": ["User"],
+				"summary": "Delete user by uniqe id",
+				"security": [{ "Bearer": [] }],
+				"requestBody": {
+					"description": "Successful operation",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserDelete"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Successful operation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserDeleteResponse"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Not authorization",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotAuthorizationUpdateUserResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "User not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotFoundResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+
 		"/api/user/water/{_id}": {
 			"delete": {
 				"tags": ["Water"],
@@ -1205,13 +1256,24 @@
 					}
 				}
 			},
-			"UserWaterModel": {
+			"UserDelete": {
 				"type": "object",
-				"required": ["waterModel"],
+				"required": ["_id"],
 				"properties": {
-					"waterModel": {
+					"_id": {
 						"type": "string",
-						"description": "Users water model"
+						"description": "Uniqe user id",
+						"example": "65b27e60a97a5a32beabeff3"
+					}
+				}
+			},
+			"UserDeleteResponse": {
+				"type": "object",
+				"required": ["message"],
+				"properties": {
+					"message": {
+						"type": "string",
+						"example": "User deleted"
 					}
 				}
 			},
